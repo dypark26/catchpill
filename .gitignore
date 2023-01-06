@@ -10,5 +10,11 @@ npm-debug.*
 *.orig.*
 web-build/
 
+// 배포전에 올립시다.
+app.json
+
+// git에 올리지 않고 Slack으로 공유합니다.
+src/shared/config.js
+
 # macOS
 .DS_Store
