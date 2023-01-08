@@ -1,5 +1,5 @@
 import styled from '@emotion/native';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { useQuery, useMutation } from 'react-query';
 import {
   getDocs,
@@ -9,7 +9,6 @@ import {
   collection,
   orderBy,
   where,
-  doc,
 } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
@@ -17,8 +16,8 @@ import {
 } from 'firebase/auth';
 import { dbService, authService } from '../shared/firebase';
 import { getAuth } from 'firebase/auth';
-import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
+import { COLORS } from '../shared/color';
 
 const adminInfo = {
   id: 'catchPillAdmin@email.com',
@@ -67,6 +66,7 @@ const MyPage = () => {
       })
       .catch((error) => console.log('error', error.errorMessage));
   };
+
   // TODO: 쿼리키 통일하기
   // UID를 조회합니다.
   const getUID = () => {
@@ -78,6 +78,7 @@ const MyPage = () => {
     },
   });
   console.log('getUid', uid);
+
   // read users pill
   const getUsersPillList = (uid) => {
     const selectedDocs = query(
@@ -88,19 +89,28 @@ const MyPage = () => {
   };
 
   // 의존적 쿼리입니다. 사용자의 UID를 얻은 후에 통신이 가능합니다.
-  const { isLoading, isError, error, data } = useQuery(
-    'pill-list',
-    () => getUsersPillList(uid),
-    {
-      enabled: !!uid,
-    },
-  );
-  const pillList = data?.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  const {
+    isLoading,
+    isError,
+    error,
+    data: pillList,
+  } = useQuery('pill-list', () => getUsersPillList(uid), {
+    enabled: !!uid,
+    select: (data) => data.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
+  });
+
   const renderPillList = pillList?.map((pillListItem) => (
-    <View>
-      <Text>{pillListItem.pillName}</Text>
-      <Text>{pillListItem.time}</Text>
-    </View>
+    <ManageListContainer>
+      <ManageListTitle>{pillListItem.pillName}</ManageListTitle>
+      <ButtonGroupContainer>
+        <TouchableOpacity>
+          <ManageButton buttonColor={COLORS.BLACK}>편집</ManageButton>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <ManageButton buttonColor={COLORS.DANGER}>삭제</ManageButton>
+        </TouchableOpacity>
+      </ButtonGroupContainer>
+    </ManageListContainer>
   ));
 
   // 에러 핸들링: 통신 실패의 경우 보여주는 화면입니다.
@@ -131,12 +141,11 @@ const MyPage = () => {
   return (
     <MyPageContainer>
       <PageTitle>나의 약관리</PageTitle>
-      {/* 목록을 통신으로 얻어오기 */}
       {/* TODO: flatList 컴포넌트로 리팩토링하기 */}
       <AddPill onPress={() => console.log('add Pill')}>
         <Text>새로운 약 추가하기</Text>
       </AddPill>
-      <AddPill onPress={() => signInWithEmailAndPassword()}>
+      <AddPill onPress={() => handleLogin()}>
         <Text>임시 회원가입</Text>
       </AddPill>
       <AddPill onPress={() => addPill(newPill)}>
@@ -165,6 +174,35 @@ const AddPill = styled.TouchableOpacity`
   margin: 8px 16px;
   height: 80px;
   border-radius: 16px;
+`;
+
+const ManageListContainer = styled.View`
+  background-color: white;
+  margin: 8px 16px;
+  padding: 12px 16px;
+  height: 80px;
+  border-radius: 16px;
+  box-shadow: 0px 0px 8px rgba(202, 202, 202, 0.23);
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ManageListTitle = styled.Text`
+  font-size: 28px;
+`;
+
+const ButtonGroupContainer = styled.View`
+  flex-direction: row;
+  justify-content: end;
+  gap: 16px;
+`;
+
+const ManageButton = styled.Text`
+  font-size: 20px;
+  line-height: 24px;
+  margin: 0 0 0 16px;
+  color: ${(props) => props.buttonColor};
 `;
 
 export default MyPage;
