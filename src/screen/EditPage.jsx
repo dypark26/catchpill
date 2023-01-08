@@ -1,17 +1,16 @@
 import { View, Text } from 'react-native';
-import { dbService } from '../shared/firebase';
-import { addDoc, collection } from 'firebase/firestore';
 import { useState } from 'react';
 import styled from '@emotion/native';
-import { async } from '@firebase/util';
 import { useAddPillData } from '../Hooks/usePill';
 
 function EditPage({ navigation: { navigate } }) {
   const [pillName, setPillName] = useState('');
   const [time, setTime] = useState('');
 
+  // usePill 커스텀 훅에서 약 추가 함수 import
   const { mutate: addPill, isError, isSuccess } = useAddPillData();
 
+  // 새로 추가될 약 정보
   const newPill = {
     userId: 'ALsTlRugmucb8QA1i8CVMNkSQgR2',
     pillName,
@@ -19,6 +18,7 @@ function EditPage({ navigation: { navigate } }) {
     isTaken: false,
   };
 
+  // 약 추가 로직
   const handleAddPill = () => {
     addPill(newPill);
     if (isError) {
@@ -33,27 +33,34 @@ function EditPage({ navigation: { navigate } }) {
 
   return (
     <EditPageContainer>
+      {/* page 의 title */}
       <EditPageTitle>나의 약 정보</EditPageTitle>
-      <EditContents>
+      {/* 수정 폼 */}
+      <EditForm>
+        {/* 약 이름 인풋 */}
         <CustomInput
           placeholder="이름"
           value={pillName}
           onChangeText={setPillName}
         />
+        {/* 약 복용시간 인풋 */}
         <CustomInput
           placeholder="복용시간"
           value={time}
           onChangeText={setTime}
         />
         <CustomButtonWrapper>
+          {/* 약 추가/저장 버튼 */}
+          {/* 커스텀 버튼 완료시 children 값 변경하기 : Add 일때는 '추가' Edit 일때는 '저장'으로 */}
           <CustomButton onPress={handleAddPill} disabled={!pillName || !time}>
             <Text>저장</Text>
           </CustomButton>
+          {/* 취소 / 돌아가기 버튼 */}
           <CustomButton onPress={() => navigate('Tabs', { screen: 'My' })}>
             <Text>취소</Text>
           </CustomButton>
         </CustomButtonWrapper>
-      </EditContents>
+      </EditForm>
     </EditPageContainer>
   );
 }
@@ -67,7 +74,7 @@ const EditPageTitle = styled.Text`
   font-weight: 600;
 `;
 
-const EditContents = styled.View``;
+const EditForm = styled.View``;
 
 const CustomInput = styled.TextInput`
   background-color: aqua;

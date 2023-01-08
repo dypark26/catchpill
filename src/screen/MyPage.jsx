@@ -1,5 +1,4 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { dbService } from '../shared/firebase';
 import styled from '@emotion/native';
 
 const MyPage = ({ navigation: { navigate } }) => {
