@@ -21,7 +21,9 @@ const MyPage = ({ navigation: { navigate } }) => {
         </PillCard>
       </ManageList>
       {/* 약 추가 버튼 */}
-      <CustomButton onPress={() => navigate('Stacks', { screen: 'EditPage' })}>
+      <CustomButton
+        onPress={() => navigate('Stacks', { screen: '수정 페이지' })}
+      >
         <Text>새로운 약 추가하기</Text>
       </CustomButton>
     </MyPageContainer>
