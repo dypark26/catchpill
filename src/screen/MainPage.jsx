@@ -1,9 +1,13 @@
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
-const MainPage = () => {
+const MainPage = ({ navigation: { navigate } }) => {
   return (
     <View>
-      <Text>MainPage</Text>
+      <TouchableOpacity
+        onPress={() => navigate('Stacks', { screen: '로그인' })}
+      >
+        <Text>로그아웃</Text>
+      </TouchableOpacity>
     </View>
   );
 };
