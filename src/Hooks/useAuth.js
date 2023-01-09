@@ -2,7 +2,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Keyboard } from 'react-native';
 import { useMutation, useQuery } from 'react-query';
 import { auth } from '../shared/firebase';
-s;
+
 export const handleSignUp = async (email, password) => {
   Keyboard.dismiss(); // 버튼 클릭 시 키보드 접기
   return createUserWithEmailAndPassword(auth, email, password);
