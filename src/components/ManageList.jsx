@@ -2,7 +2,8 @@ import styled from '@emotion/native';
 import { COLORS } from '../shared/color';
 import { TouchableOpacity } from 'react-native';
 
-const ManageList = ({ pillName, id }) => {
+const ManageList = ({ pillName, time, id, navigate }) => {
+  // console.log(pillName, time);
   return (
     <ManageListContainer>
       <ManageListTitle>{pillName}</ManageListTitle>
@@ -11,7 +12,12 @@ const ManageList = ({ pillName, id }) => {
           // 클릭하면 페이지 이동
           buttonColor={COLORS.BLACK}
           buttonText="편집"
-          onPress={() => console.log('편집', id)}
+          onPress={() =>
+            navigate('Stacks', {
+              screen: '수정 페이지',
+              params: { isEdit: true, eachPillName: pillName, eachTime: time },
+            })
+          }
         />
         <TextButton
           // 클릭하면 alert()

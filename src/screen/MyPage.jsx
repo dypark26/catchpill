@@ -1,7 +1,14 @@
 import styled from '@emotion/native';
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { getDocs, query, collection, orderBy, where } from 'firebase/firestore';
+import {
+  getDocs,
+  query,
+  collection,
+  orderBy,
+  where,
+  doc,
+} from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -59,21 +66,46 @@ const MyPage = ({ navigation: { navigate } }) => {
     return getDocs(selectedDocs);
   };
 
+  // 기존 로직
   // 의존적 쿼리입니다. 사용자의 UID를 얻은 후에 통신이 가능합니다.
+  // const {
+  //   isLoading,
+  //   isError,
+  //   error,
+  //   data: pillList,
+  // } = useQuery('pill-list', () => getUsersPillList(uid), {
+  //   enabled: !!uid,
+  //   select: (data) => {
+  //     return data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  //   },
+  // });
+
+  // const renderPillList = pillList?.map(({ id, pillName }) => (
+  //   <ManageList key={id} id={id} pillName={pillName} />
+  // ));
+
+  // 임시 로직
+  const sampleUid = 'ALsTlRugmucb8QA1i8CVMNkSQgR2';
   const {
     isLoading,
     isError,
     error,
     data: pillList,
-  } = useQuery('pill-list', () => getUsersPillList(uid), {
-    enabled: !!uid,
+  } = useQuery('pill-list', () => getUsersPillList(sampleUid), {
+    enabled: !!sampleUid,
     select: (data) => {
       return data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     },
   });
 
-  const renderPillList = pillList?.map(({ id, pillName }) => (
-    <ManageList key={id} id={id} pillName={pillName} />
+  const renderPillList = pillList?.map(({ id, pillName, time }) => (
+    <ManageList
+      key={id}
+      id={id}
+      pillName={pillName}
+      time={time}
+      navigate={navigate}
+    />
   ));
 
   // 에러 핸들링: 통신 실패의 경우 보여주는 화면입니다.
@@ -108,10 +140,17 @@ const MyPage = ({ navigation: { navigate } }) => {
       <AddPill onPress={() => handleLogin()}>
         <Text>임시 로그인</Text>
       </AddPill>
-      <AddPill onPress={() => navigate('Stacks', { screen: '수정 페이지' })}>
+      <ScrollView>{renderPillList}</ScrollView>
+      <AddPill
+        onPress={() =>
+          navigate('Stacks', {
+            screen: '수정 페이지',
+            params: { isEdit: false, eachPillName: '', eachTime: '' },
+          })
+        }
+      >
         <Text>약추가</Text>
       </AddPill>
-      {renderPillList}
       {/* TODO: 하단 tabs */}
     </MyPageContainer>
   );
