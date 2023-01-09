@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { handleSignUp } from '../Hooks/useAuth';
+import { useSignup } from '../Hooks/useAuth';
 
 const regex = {
   email: new RegExp(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/),
@@ -20,7 +20,7 @@ export const SignupPage = () => {
   const [password, setPassword] = useState(''); // 비밀번호 값 저장
   const [correctEmail, setCorrectEmail] = useState(true); // 이메일 유효성 검사
   const [correctPassword, setCorrectPassword] = useState(true); // 비밀번호 유효성 검사
-  const [visablePassword, setVisablePassword] = useState(false); // 비밀번호 보이게
+  const [visablePassword, setVisablePassword] = useState(true); // 비밀번호 보이게
 
   const vaildEmail = (event) => {
     // 유효성 검사 후 false가 나오면 문구 띄우기
@@ -35,6 +35,8 @@ export const SignupPage = () => {
       ? setCorrectPassword(true)
       : setCorrectPassword(false);
   };
+
+  const { mutate: SignUp } = useSignup();
 
   const onClickSignUpButton = (email, password) => {
     //양식 제출 시, 빈값, 유효성 검사 틀린 값 잡아내서 리턴 후 오류 문구 띄우기
@@ -52,7 +54,12 @@ export const SignupPage = () => {
       setCorrectPassword(false);
       return;
     } else {
-      handleSignUp(email, password);
+      //useSignup(email, password);
+      //handleSignUp(email, password);
+      SignUp({ email, password });
+      // if(isError) {
+
+      // }
       setEmail('');
       setPassword('');
     }

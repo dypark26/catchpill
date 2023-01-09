@@ -1,6 +1,5 @@
 import { TouchableOpacity, View, Text, TextInput } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
-import styled from '@emotion/native';
 import { authService, dbService } from '../shared/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
@@ -56,7 +55,7 @@ const LoginPage = ({ navigation: { navigate } }) => {
       <TouchableOpacity onPress={() => handleLogin()}>
         <Text>로그인</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigate('SignupPage')}>
+      <TouchableOpacity onPress={() => navigate('회원가입')}>
         <Text>회원가입</Text>
       </TouchableOpacity>
     </View>
