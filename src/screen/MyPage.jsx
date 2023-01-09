@@ -15,7 +15,7 @@ const adminInfo = {
   pw: '123456',
 };
 // { navigation: { navigate } }
-const MyPage = () => {
+const MyPage = ({ navigation: { navigate } }) => {
   // 회원가입입니다.
   const handlesSignUp = (id, pw) => {
     return createUserWithEmailAndPassword(
