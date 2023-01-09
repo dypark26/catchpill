@@ -1,6 +1,6 @@
 import { TouchableOpacity, View, Text, TextInput } from 'react-native';
-import { useState, useEffect, useRef } from 'react';
-import { authService, dbService } from '../shared/firebase';
+import { useState, useRef } from 'react';
+import { authService } from '../shared/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginPage = ({ navigation: { navigate } }) => {

@@ -15,12 +15,12 @@ const regex = {
   ), // 6자 이상, 14자 이하의 영어 대,소문자, 1개 이상의 숫자, 특수문자 조합
 };
 
-export const SignupPage = () => {
+const SignupPage = () => {
   const [email, setEmail] = useState(''); // 이메일 값 저장
   const [password, setPassword] = useState(''); // 비밀번호 값 저장
   const [correctEmail, setCorrectEmail] = useState(true); // 이메일 유효성 검사
   const [correctPassword, setCorrectPassword] = useState(true); // 비밀번호 유효성 검사
-  const [visablePassword, setVisablePassword] = useState(true); // 비밀번호 보이게
+  const [visablePassword, setVisablePassword] = useState(false); // 비밀번호 보이게
 
   const vaildEmail = (event) => {
     // 유효성 검사 후 false가 나오면 문구 띄우기
@@ -54,12 +54,7 @@ export const SignupPage = () => {
       setCorrectPassword(false);
       return;
     } else {
-      //useSignup(email, password);
-      //handleSignUp(email, password);
       SignUp({ email, password });
-      // if(isError) {
-
-      // }
       setEmail('');
       setPassword('');
     }
@@ -111,3 +106,5 @@ export const SignupPage = () => {
 };
 
 const styles = StyleSheet.create({});
+
+export default SignupPage;

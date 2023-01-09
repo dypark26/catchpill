@@ -19,9 +19,6 @@ export const useSignup = () => {
     },
   });
 };
-// export const useSignup = (email, password) => {
-//   return
-// }
 const getUID = () => {
   return authService;
 };
