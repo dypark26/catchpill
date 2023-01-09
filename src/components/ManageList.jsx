@@ -1,8 +1,32 @@
 import styled from '@emotion/native';
 import { COLORS } from '../shared/color';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Alert } from 'react-native';
+import { useDeletePillData } from '../Hooks/usePill';
 
+// TODO: MyPage에 있는 약 목록을 삭제하는 기능을 구현합니다.
+// TODO: 모달이 나와야 합니다.
 const ManageList = ({ pillName, id }) => {
+  const { mutate: deletePill } = useDeletePillData();
+
+  const handleDelete = () => {
+    Alert.alert(
+      '약 기록을 삭제하시겠습니까?',
+      '삭제할 때는 마음대로지만 복구할 때는 아닙니다.',
+      [
+        {
+          text: '취소',
+          style: 'cancel',
+        },
+        {
+          text: '삭제',
+          onPress: () => {
+            deletePill(id);
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <ManageListContainer>
       <ManageListTitle>{pillName}</ManageListTitle>
@@ -17,7 +41,7 @@ const ManageList = ({ pillName, id }) => {
           // 클릭하면 alert()
           buttonColor={COLORS.DANGER}
           buttonText="삭제"
-          onPress={() => console.log('삭제', id)}
+          onPress={() => handleDelete()}
         />
       </ButtonGroupContainer>
     </ManageListContainer>
