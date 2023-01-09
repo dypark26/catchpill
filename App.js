@@ -5,6 +5,8 @@ import Root from './src/Navigations/Root';
 const queryClient = new QueryClient();
 
 export default function App() {
+  const Stack = createNativeStackNavigator();
+
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
