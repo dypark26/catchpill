@@ -1,39 +1,31 @@
 import styled from '@emotion/native';
 import { Text, View } from 'react-native';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import {
-  getDocs,
-  onSnapshot,
-  addDoc,
-  query,
-  collection,
-  orderBy,
-  where,
-} from 'firebase/firestore';
+import { getDocs, query, collection, orderBy, where } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { dbService, authService } from '../shared/firebase';
 import { getAuth } from 'firebase/auth';
-import { v4 as uuid } from 'uuid';
 import { ManageList } from '../components';
 
 const adminInfo = {
   id: 'catchPillAdmin@email.com',
   pw: '123456',
 };
-
+// { navigation: { navigate } }
 const MyPage = () => {
   // 회원가입입니다.
-  const handlesSignUp = () => {
-    createUserWithEmailAndPassword(authService, adminInfo.id, adminInfo.pw)
-      .then((userData) => console.log(userData.user))
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log('회원가입 실패', errorMessage);
-      });
+  const handlesSignUp = (id, pw) => {
+    return createUserWithEmailAndPassword(
+      authService,
+      adminInfo.id,
+      adminInfo.pw,
+    );
   };
+
+  useMutation(() => handlesSignUp(id, pw));
 
   // 로그인입니다.
   const handleLogin = () => {
@@ -76,56 +68,7 @@ const MyPage = () => {
   } = useQuery('pill-list', () => getUsersPillList(uid), {
     enabled: !!uid,
     select: (data) => {
-      return data.docs.map((doc) => {
-        // console.log('doc', doc);
-        return {
-          id: doc.id,
-          userId: doc?.data()?.userId,
-          pillName: doc?.data()?.pillName,
-          time: doc?.data()?.time,
-          isTaken: doc?.data()?.isTaken,
-        };
-      });
-    },
-  });
-
-  const queryClient = useQueryClient();
-
-  // 새로운 약 목록을 추가하는 Mutation 함수입니다.
-  const postNewPill = (newPill) => {
-    const selectedDoc = collection(dbService, 'pill');
-    return addDoc(selectedDoc, newPill);
-  };
-
-  // console.log('getUid', uid);
-
-  const newPill = {
-    // id: uuid(),
-    userId: uid,
-    pillName: '점심약',
-    time: '12:00',
-    isTaken: false,
-  };
-
-  const { mutate: addPill } = useMutation(() => postNewPill(newPill), {
-    onMutate: async () => {
-      // 재요청으로 인한 덮어쓰기를 막습니다.
-      await queryClient.cancelQueries('pill-list');
-      const previousPillData = queryClient.getQueryData('pill-list');
-      queryClient.setQueriesData('pill-list', (oldPillData) => {
-        return { ...oldPillData, docs: [...oldPillData?.docs, newPill] };
-      });
-      return { previousPillData };
-    },
-    onError: (_, __, context) => {
-      queryClient.setQueriesData('pill-list', context.previousPillData);
-    },
-    onSuccess: (data) => {
-      console.log('data', data);
-    },
-    onSettled: () => {
-      // 클라이언트 상태가 서버 상태랑 동일하게 싱크를 맞추어줍니다.
-      queryClient.invalidateQueries('pill-list');
+      return data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     },
   });
 
@@ -134,17 +77,17 @@ const MyPage = () => {
   ));
 
   // 에러 핸들링: 통신 실패의 경우 보여주는 화면입니다.
-  // if (isError) {
-  //   return (
-  //     <MyPageContainer>
-  //       <PageTitle>나의 약관리</PageTitle>
-  //       <View>
-  //         <Text>에러</Text>
-  //         <Text>{error.errorMessage}</Text>
-  //       </View>
-  //     </MyPageContainer>
-  //   );
-  // }
+  if (isError) {
+    return (
+      <MyPageContainer>
+        <PageTitle>나의 약관리</PageTitle>
+        <View>
+          <Text>에러</Text>
+          <Text>{error.errorMessage}</Text>
+        </View>
+      </MyPageContainer>
+    );
+  }
 
   // 통신 중
   if (isLoading) {
@@ -165,7 +108,7 @@ const MyPage = () => {
       <AddPill onPress={() => handleLogin()}>
         <Text>임시 로그인</Text>
       </AddPill>
-      <AddPill onPress={() => addPill(newPill)}>
+      <AddPill onPress={() => console.log('약추가')}>
         <Text>약추가</Text>
       </AddPill>
       {renderPillList}
