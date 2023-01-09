@@ -108,7 +108,7 @@ const MyPage = ({ navigation: { navigate } }) => {
       <AddPill onPress={() => handleLogin()}>
         <Text>임시 로그인</Text>
       </AddPill>
-      <AddPill onPress={() => console.log('약추가')}>
+      <AddPill onPress={() => navigate('Stacks', { screen: '수정 페이지' })}>
         <Text>약추가</Text>
       </AddPill>
       {renderPillList}

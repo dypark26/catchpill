@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { handleSignUp } from '../Hooks/useAuth';
+import { useSignup } from '../Hooks/useAuth';
 
 const regex = {
   email: new RegExp(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/),
@@ -15,7 +15,7 @@ const regex = {
   ), // 6자 이상, 14자 이하의 영어 대,소문자, 1개 이상의 숫자, 특수문자 조합
 };
 
-export const SignupPage = () => {
+const SignupPage = () => {
   const [email, setEmail] = useState(''); // 이메일 값 저장
   const [password, setPassword] = useState(''); // 비밀번호 값 저장
   const [correctEmail, setCorrectEmail] = useState(true); // 이메일 유효성 검사
@@ -36,6 +36,8 @@ export const SignupPage = () => {
       : setCorrectPassword(false);
   };
 
+  const { mutate: SignUp } = useSignup();
+
   const onClickSignUpButton = (email, password) => {
     //양식 제출 시, 빈값, 유효성 검사 틀린 값 잡아내서 리턴 후 오류 문구 띄우기
     if (
@@ -52,7 +54,7 @@ export const SignupPage = () => {
       setCorrectPassword(false);
       return;
     } else {
-      handleSignUp(email, password);
+      SignUp({ email, password });
       setEmail('');
       setPassword('');
     }
@@ -104,3 +106,5 @@ export const SignupPage = () => {
 };
 
 const styles = StyleSheet.create({});
+
+export default SignupPage;
