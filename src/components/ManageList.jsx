@@ -5,10 +5,10 @@ import { useDeletePillData } from '../Hooks/usePill';
 import TextButton from './TextButton';
 
 // TODO: MyPage에 있는 약 목록을 삭제하는 기능을 구현합니다.
-const ManageList = ({ pillName, id }) => {
+const ManageList = ({ id, pillName, time, navigate }) => {
   const { mutate: deletePill } = useDeletePillData();
 
-  const handleDelete = (id) => {
+  const handleDeletePill = (id) => {
     Alert.alert(
       '약 기록을 삭제하시겠습니까?',
       '삭제할 때는 마음대로지만 복구할 때는 아닙니다.',
@@ -35,13 +35,23 @@ const ManageList = ({ pillName, id }) => {
           // 클릭하면 페이지 이동
           buttonColor={COLORS.BLACK}
           buttonText="편집"
-          onPress={() => console.log('편집', id)}
+          onPress={() =>
+            navigate('Stacks', {
+              screen: '수정 페이지',
+              params: {
+                id: id,
+                isEdit: true,
+                eachPillName: pillName,
+                eachTime: time,
+              },
+            })
+          }
         />
         <TextButton
           // 클릭하면 alert()
           buttonColor={COLORS.DANGER}
           buttonText="삭제"
-          onPress={() => handleDelete(id)}
+          onPress={() => handleDeletePill(id)}
         />
       </ButtonGroupContainer>
     </ManageListContainer>
