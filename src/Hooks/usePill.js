@@ -109,6 +109,16 @@ export const useToggleTakenPill = () => {
   });
 };
 
+// 약 수정 함수 / firestore에 약 정보 수정
+const EditPill = ({ pillId, newEditPill }) => {
+  return updateDoc(doc(dbService, 'pill', pillId), newEditPill);
+};
+
+// 약 수정 함수
+export const useEditPillData = () => {
+  return useMutation(EditPill);
+};
+
 // 약 삭제 함수 / firestore에 새로운 약 정보 삭제
 const deletePill = (pill) => {
   return deleteDoc(doc(dbService, 'pill', pill));

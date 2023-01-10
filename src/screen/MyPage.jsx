@@ -36,9 +36,6 @@ const MyPage = ({ navigation: { navigate } }) => {
   return (
     <MyPageContainer>
       <PageTitle>나의 약관리</PageTitle>
-      <AddPill onPress={() => handleLogin()}>
-        <Text>임시 로그인</Text>
-      </AddPill>
       <AddPill
         onPress={() =>
           navigate('Stacks', {
