@@ -39,14 +39,26 @@ const MyPage = ({ navigation: { navigate } }) => {
       <AddPill onPress={() => handleLogin()}>
         <Text>임시 로그인</Text>
       </AddPill>
-      <AddPill onPress={() => navigate('Stacks', { screen: '수정 페이지' })}>
+      <AddPill
+        onPress={() =>
+          navigate('Stacks', {
+            screen: '수정 페이지',
+            params: { isEdit: false, eachPillName: '', eachTime: '' },
+          })
+        }
+      >
         <Text>약추가</Text>
       </AddPill>
       <FlatList
         data={pillList}
         keyExtractor={(item) => item.id}
-        renderItem={({ item: { id, pillName } }) => (
-          <ManageList id={id} pillName={pillName} />
+        renderItem={({ item: { id, pillName, time } }) => (
+          <ManageList
+            id={id}
+            pillName={pillName}
+            time={time}
+            navigate={navigate}
+          />
         )}
       />
     </MyPageContainer>

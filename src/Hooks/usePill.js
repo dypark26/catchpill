@@ -8,11 +8,12 @@ import {
   doc,
   where,
   getDocs,
+  updateDoc,
 } from 'firebase/firestore';
 
 // 약 추가 함수 / firestore에 약 새로운 약 정보 추가
-const addPill = (pill) => {
-  return addDoc(collection(dbService, 'pill'), pill);
+const addPill = (newPill) => {
+  return addDoc(collection(dbService, 'pill'), newPill);
 };
 
 // 약 추가 함수
@@ -43,6 +44,16 @@ export const useGetPillData = (uid) => {
       return data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     },
   });
+};
+
+// 약 수정 함수 / firestore에 약 정보 수정
+const EditPill = ({ pillId, newEditPill }) => {
+  return updateDoc(doc(dbService, 'pill', pillId), newEditPill);
+};
+
+// 약 수정 함수
+export const useEditPillData = () => {
+  return useMutation(EditPill);
 };
 
 // 약 삭제 함수 / firestore에 새로운 약 정보 삭제
