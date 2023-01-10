@@ -12,8 +12,8 @@ import {
 } from 'firebase/firestore';
 
 // 약 추가 함수 / firestore에 약 새로운 약 정보 추가
-const addPill = (pill) => {
-  return addDoc(collection(dbService, 'pill'), pill);
+const addPill = (newPill) => {
+  return addDoc(collection(dbService, 'pill'), newPill);
 };
 
 // 약 추가 함수
