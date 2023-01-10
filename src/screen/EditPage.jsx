@@ -1,7 +1,7 @@
 import { View, Text, Alert } from 'react-native';
 import { useState } from 'react';
 import styled from '@emotion/native';
-import { useAddPillData } from '../Hooks/usePill';
+import { useAddPillData, useEditPillData } from '../Hooks/usePill';
 import { COLORS } from '../shared/color';
 
 function EditPage({ navigation: { navigate }, route: { params } }) {
@@ -9,7 +9,7 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
   // isEdit = true / eachPillName = 약 이름 / eachTime = 복용시간
   // '새로운 약 추가하기'에서 EditPage 들어오면
   // isEdit = false / eachPillName = "" / eachTime = ""
-  const { isEdit, eachPillName, eachTime } = params;
+  const { id, isEdit, eachPillName, eachTime } = params;
 
   const [pillName, setPillName] = useState();
   const [time, setTime] = useState();
@@ -27,8 +27,7 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
 
   // 약 추가 로직
   const handleAddPill = () => {
-    console.log('약 추가 성공!');
-    // addPill(newPill);
+    addPill(newPill);
     if (isError) {
       console.log('새로운 약 추가 실패');
     }
@@ -46,9 +45,22 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
     ]);
   };
 
+  const { mutate: editPill } = useEditPillData();
+
+  // 수정된 약 정보
+  let newEditPill = {};
+  if (pillName) {
+    Object.assign(newEditPill, { pillName: pillName });
+  }
+  if (time) {
+    Object.assign(newEditPill, { time: time });
+  }
+
   // 약 편집 로직
   const handleEditPill = () => {
+    editPill({ pillId: id, newEditPill });
     console.log('약 수정 성공!');
+
     if (isError) {
       console.log('약 수정 실패');
     }
@@ -88,23 +100,17 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
             <CustomButton
               onPress={handleEditPill}
               disabled={!pillName && !time}
-              // buttonColor={COLORS}
             >
               <Text>수정</Text>
             </CustomButton>
           ) : (
-            <CustomButton
-              onPress={handleAddPill}
-              disabled={!pillName || !time}
-              // buttonColor={COLORS}
-            >
+            <CustomButton onPress={handleAddPill} disabled={!pillName || !time}>
               <Text>저장</Text>
             </CustomButton>
           )}
           {/* 취소 / 돌아가기 버튼 */}
           <CustomButton
             onPress={() => navigate('Tabs', { screen: '마이 페이지' })}
-            // buttonColor={COLORS.POINT_COLOR_100}
           >
             <Text>취소</Text>
           </CustomButton>
