@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 import { useState } from 'react';
-import { Platform, SafeAreaView } from 'react-native';
+import { Platform, SafeAreaView, StyleSheet } from 'react-native';
 import { useSignup } from '../Hooks/useAuth';
 import { FontAwesome } from '@expo/vector-icons';
 import { COLORS } from '../shared/color';
@@ -72,28 +72,14 @@ const SignupPage = ({ navigation: { navigate } }) => {
             value={email}
             onChangeText={setEmail}
             onChange={(text) => vaildEmail(text)}
-            style={Platform.select({
-              ios: {
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-              },
-              android: {
-                backgroundColor: 'white',
-                elevation: 5,
-              },
-            })}
+            style={styles.textInputShadow}
           />
 
           {correctEmail || (
             <ErrorText>
               {email === ''
                 ? '필수 입력값입니다.'
-                : '올바른 형식의 이메일을 작성해주세요'}
+                : '올바른 형식의 이메일을 작성해주세요.'}
             </ErrorText>
           )}
         </InputContainer>
@@ -108,21 +94,7 @@ const SignupPage = ({ navigation: { navigate } }) => {
             onChangeText={setPassword}
             onChange={(text) => vaildPassword(text)}
             secureTextEntry={visablePassword}
-            style={Platform.select({
-              ios: {
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-              },
-              android: {
-                backgroundColor: 'white',
-                elevation: 5,
-              },
-            })}
+            style={styles.textInputShadow}
           />
           <PasswordShowButton
             onPress={() => setVisablePassword(!visablePassword)}
@@ -202,13 +174,33 @@ const CustomButton = styled.TouchableOpacity`
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  gap: 147px;
-  margin-top: 47px;
+  gap: 148px;
+  margin-top: 48px;
   width: 100%;
   height: 80px;
   background: #0feec6;
   border-radius: 16px;
 `;
 //
+
+const styles = StyleSheet.create({
+  textInputShadow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+      },
+      android: {
+        backgroundColor: 'white',
+        elevation: 5,
+      },
+    }),
+  },
+});
 
 export default SignupPage;
