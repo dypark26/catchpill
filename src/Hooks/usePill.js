@@ -52,12 +52,5 @@ const deletePill = (pill) => {
 
 // 약 삭제 함수
 export const useDeletePillData = () => {
-  return useMutation(deletePill, {
-    onError: () => {
-      console.log('ㅗ');
-    },
-    onSuccess: () => {
-      console.log('ㅇㅇ');
-    },
-  });
+  return useMutation(deletePill);
 };
