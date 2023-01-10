@@ -1,8 +1,9 @@
-import { View, Text, Alert } from 'react-native';
+import { Text, Alert } from 'react-native';
 import { useState } from 'react';
 import styled from '@emotion/native';
 import { useAddPillData, useEditPillData } from '../Hooks/usePill';
 import { COLORS } from '../shared/color';
+import { useUID } from '../Hooks/useAuth';
 
 function EditPage({ navigation: { navigate }, route: { params } }) {
   // '편집'에서 EditPage 들어오면
@@ -10,6 +11,7 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
   // '새로운 약 추가하기'에서 EditPage 들어오면
   // isEdit = false / eachPillName = "" / eachTime = ""
   const { id, isEdit, eachPillName, eachTime } = params;
+  const { data: userId } = useUID();
 
   const [pillName, setPillName] = useState();
   const [time, setTime] = useState();
@@ -19,7 +21,7 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
 
   // 새로 추가될 약 정보
   const newPill = {
-    userId: 'ALsTlRugmucb8QA1i8CVMNkSQgR2',
+    userId,
     pillName,
     time,
     isTaken: false,
