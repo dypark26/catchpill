@@ -1,3 +1,4 @@
 import ManageList from './ManageList';
+import GraphicStatus from './GraphicStatus';
 
-export { ManageList };
+export { ManageList, GraphicStatus };
