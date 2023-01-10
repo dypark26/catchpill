@@ -1,12 +1,12 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Keyboard } from 'react-native';
 import { useMutation, useQuery } from 'react-query';
-import { authService } from '../shared/firebase';
+import { auth } from '../shared/firebase';
 
 export const SignUp = async (payload) => {
   const { email, password } = payload;
   Keyboard.dismiss(); // 버튼 클릭 시 키보드 접기
-  return createUserWithEmailAndPassword(authService, email, password);
+  return createUserWithEmailAndPassword(auth, email, password);
 };
 export const useSignup = () => {
   return useMutation(SignUp, {
@@ -20,7 +20,7 @@ export const useSignup = () => {
   });
 };
 const getUID = () => {
-  return authService;
+  return auth;
 };
 
 export const useUID = () => {

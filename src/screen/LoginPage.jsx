@@ -1,6 +1,6 @@
 import { TouchableOpacity, View, Text, TextInput } from 'react-native';
 import { useState, useRef } from 'react';
-import { authService } from '../shared/firebase';
+import { auth } from '../shared/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginPage = ({ navigation: { navigate } }) => {
@@ -21,7 +21,7 @@ const LoginPage = ({ navigation: { navigate } }) => {
     }
 
     // 로그인 요청
-    signInWithEmailAndPassword(authService, email, pw)
+    signInWithEmailAndPassword(auth, email, pw)
       .then(() => {
         setEmail('');
         setPw('');
