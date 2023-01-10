@@ -5,15 +5,8 @@ import { useUID } from '../Hooks/useAuth';
 import { useGetPillData } from '../Hooks/usePill';
 
 const MyPage = ({ navigation: { navigate } }) => {
-  const sampleUid = 'ALsTlRugmucb8QA1i8CVMNkSQgR2';
-  // 임시로 로그인된 uid 가져오는 것을 주석처리 했습니다.
-  // const { data: uid } = useUID();
-  const {
-    isLoading,
-    isError,
-    error,
-    data: pillList,
-  } = useGetPillData(sampleUid);
+  const { data: uid } = useUID();
+  const { isLoading, isError, error, data: pillList } = useGetPillData(uid);
 
   // 에러 핸들링: 통신 실패의 경우 보여주는 화면입니다.
   if (isError) {
