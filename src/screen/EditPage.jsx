@@ -11,7 +11,6 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
   // '새로운 약 추가하기'에서 EditPage 들어오면
   // isEdit = false / eachPillName = "" / eachTime = ""
   const { id, isEdit, eachPillName, eachTime } = params;
-  const { data: userId } = useUID();
 
   const [pillName, setPillName] = useState();
   const [time, setTime] = useState();
