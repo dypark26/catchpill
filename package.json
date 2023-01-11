@@ -17,6 +17,7 @@
     "expo": "~47.0.9",
     "expo-status-bar": "~1.4.2",
     "firebase": "^9.15.0",
+    "pretty-format": "^29.3.1",
     "react": "18.1.0",
     "react-native": "0.70.5",
     "react-native-safe-area-context": "4.4.1",
