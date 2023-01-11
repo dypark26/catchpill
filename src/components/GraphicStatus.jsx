@@ -4,12 +4,12 @@ import { COLORS } from '../shared/color';
 import { useUID } from '../Hooks/useAuth';
 import { useGetPillData } from '../Hooks/usePill';
 import { useState } from 'react';
+import ConfettiCannon from 'react-native-confetti-cannon';
 
 const GraphicStatus = () => {
   const { data: uid } = useUID();
   const { isError, error, isLoading, data: pillList } = useGetPillData(uid);
   const [message, setMessage] = useState(false);
-  console.log(message);
 
   const toggleSupportMessage = () => {
     setMessage((current) => !current);
@@ -73,6 +73,13 @@ const GraphicStatus = () => {
 
     return (
       <GraphicContainer>
+        {opacity === 1 ? (
+          <ConfettiCannon
+            count={200}
+            origin={{ x: -10, y: 0 }}
+            fadeOut={true}
+          />
+        ) : null}
         <Supports>
           <TouchableOpacity onPress={toggleSupportMessage}>
             <SupportEmoji>👏</SupportEmoji>
@@ -93,7 +100,6 @@ const GraphicStatus = () => {
             {supportArr[pop]}
           </SupportText>
         </Supports>
-
         <LeftPill style={{ backgroundColor: color }}>
           <LeftpillText1>남은 약:</LeftpillText1>
           <LeftpillText2>{leftPillNum}</LeftpillText2>
