@@ -1,3 +1,4 @@
+import { GraphicStatus } from '../components/index';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { useUID } from '../Hooks/useAuth';
 import { useGetPillData } from '../Hooks/usePill';
@@ -26,6 +27,7 @@ const MainPage = ({ navigation: { navigate } }) => {
 
   return (
     <View>
+      <GraphicStatus />
       <TouchableOpacity
         onPress={() => navigate('Stacks', { screen: '로그인' })}
       >
