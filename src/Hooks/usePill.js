@@ -43,6 +43,7 @@ export const useGetPillData = (uid) => {
     select: (data) => {
       return data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     },
+    refetchOnMount: true,
   });
 };
 
