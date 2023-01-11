@@ -15,7 +15,7 @@ const MyPage = ({ navigation: { navigate } }) => {
         <PageTitle>나의 약관리</PageTitle>
         <View>
           <Text>에러</Text>
-          <Text>{error.errorMessage}</Text>
+          <Text>{error.message}</Text>
         </View>
       </MyPageContainer>
     );

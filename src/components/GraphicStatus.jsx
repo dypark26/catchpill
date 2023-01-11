@@ -1,32 +1,65 @@
 import { View, Text } from 'react-native';
 import styled from '@emotion/native';
 import { COLORS } from '../shared/color';
+import { useUID } from '../Hooks/useAuth';
+import { useGetPillData } from '../Hooks/usePill';
 
 const GraphicStatus = () => {
-  return (
-    <GraphicContainer>
-      <Supports>
-        <SupportEmoji>👏</SupportEmoji>
-        <SupportText>
-          와! 벌써 <TakenPill>5</TakenPill>개나 드셨네요!
-        </SupportText>
-      </Supports>
+  const { data: uid } = useUID();
+  const { isError, error, isLoading, data: pillList } = useGetPillData(uid);
 
-      <LeftPill>
-        <LeftpillText1>남은 약:</LeftpillText1>
-        <LeftpillText2>1</LeftpillText2>
-        <LeftpillText3>/5</LeftpillText3>
-      </LeftPill>
-    </GraphicContainer>
-  );
+  if (isError) {
+    return (
+      <View>
+        <Text>에러 페이지</Text>
+        <Text>{error.message}</Text>
+      </View>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>로딩 화면</Text>
+      </View>
+    );
+  }
+
+  if (pillList !== undefined) {
+    const totalPillNum = pillList.length;
+
+    let isTakenNum = 0;
+    for (pill of pillList) {
+      if (pill.isTaken === true) {
+        isTakenNum += 1;
+      }
+    }
+    const leftPillNum = totalPillNum - isTakenNum;
+    return (
+      <GraphicContainer>
+        <Supports>
+          <SupportEmoji>👏</SupportEmoji>
+          <SupportText>
+            와! 벌써 <TakenPill>{isTakenNum}</TakenPill>개나 드셨네요!
+          </SupportText>
+        </Supports>
+
+        <LeftPill>
+          <LeftpillText1>남은 약:</LeftpillText1>
+          <LeftpillText2>{leftPillNum}</LeftpillText2>
+          <LeftpillText3>/{totalPillNum}</LeftpillText3>
+        </LeftPill>
+      </GraphicContainer>
+    );
+  }
 };
 
 export default GraphicStatus;
 
 const GraphicContainer = styled.View`
   background-color: white;
-  margin-top: 5px;
   align-items: center;
+  padding-bottom: 10px;
 `;
 
 const Supports = styled.View`
