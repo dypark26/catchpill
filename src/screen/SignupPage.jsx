@@ -1,9 +1,11 @@
 import styled from '@emotion/native';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Platform, SafeAreaView, StyleSheet } from 'react-native';
 import { useSignup } from '../Hooks/useAuth';
 import { FontAwesome } from '@expo/vector-icons';
 import { COLORS } from '../shared/color';
+import { ThemeContext } from '../context/Theme';
+import { ToggleModeButton } from '../context/Theme';
 
 const regex = {
   email: new RegExp(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/),
@@ -13,6 +15,7 @@ const regex = {
 };
 
 const SignupPage = ({ navigation: { navigate } }) => {
+  const { theme } = useContext(ThemeContext);
   const [email, setEmail] = useState(''); // 이메일 값 저장
   const [password, setPassword] = useState(''); // 비밀번호 값 저장
   const [correctEmail, setCorrectEmail] = useState(true); // 이메일 유효성 검사
@@ -59,12 +62,17 @@ const SignupPage = ({ navigation: { navigate } }) => {
 
   return (
     <SafeAreaView>
-      <FormContainer>
+      <FormContainer theme={theme}>
         <BackToLoginPageButton onPress={() => navigate('로그인')}>
-          <FontAwesome name="chevron-left" size={23} color="black" />
+          <FontAwesome
+            name="chevron-left"
+            size={23}
+            color={theme === 'light' ? 'white' : 'black'}
+          />
         </BackToLoginPageButton>
+        <ToggleModeButton />
         <InputContainer>
-          <LabelText>아이디</LabelText>
+          <LabelText theme={theme}>아이디</LabelText>
           <CustomInput
             type="text"
             keyboardType="email-address"
@@ -85,7 +93,7 @@ const SignupPage = ({ navigation: { navigate } }) => {
         </InputContainer>
 
         <InputContainer>
-          <LabelText>비밀번호</LabelText>
+          <LabelText theme={theme}>비밀번호</LabelText>
           <CustomInput
             type="password"
             keyBoardType="default"
@@ -124,7 +132,7 @@ const SignupPage = ({ navigation: { navigate } }) => {
 const FormContainer = styled.View`
   padding: 10px;
   height: 100%;
-  background-color: white;
+  background-color: ${(props) => (props.theme === 'light' ? 'white' : 'black')};
 `;
 
 const BackToLoginPageButton = styled.TouchableOpacity`
@@ -139,6 +147,7 @@ const LabelText = styled.Text`
   font-size: 28px;
   font-weight: 400;
   margin: 16px 0 10px 0;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 
 const ErrorText = styled.Text`
@@ -181,7 +190,6 @@ const CustomButton = styled.TouchableOpacity`
   background: #0feec6;
   border-radius: 16px;
 `;
-//
 
 const styles = StyleSheet.create({
   textInputShadow: {
@@ -202,5 +210,7 @@ const styles = StyleSheet.create({
     }),
   },
 });
+
+//
 
 export default SignupPage;
