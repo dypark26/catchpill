@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styled from '@emotion/native';
 import { useAddPillData, useEditPillData } from '../Hooks/usePill';
 import { COLORS } from '../shared/color';
+import { useUID } from '../Hooks/useAuth';
 
 function EditPage({ navigation: { navigate }, route: { params } }) {
   // '편집'에서 EditPage 들어오면
@@ -18,8 +19,11 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
   const { mutate: addPill, isError, isSuccess } = useAddPillData();
 
   // 새로 추가될 약 정보
+  const { data: userId } = useUID();
+
+  // 새로 추가될 약 정보
   const newPill = {
-    userId: 'ALsTlRugmucb8QA1i8CVMNkSQgR2',
+    userId,
     pillName,
     time,
     isTaken: false,

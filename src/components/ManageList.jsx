@@ -77,7 +77,7 @@ const ManageListTitle = styled.Text`
 
 const ButtonGroupContainer = styled.View`
   flex-direction: row;
-  justify-content: end;
+  /* justify-content: end; */
   gap: 16px;
 `;
 
