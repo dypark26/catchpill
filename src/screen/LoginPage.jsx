@@ -1,64 +1,58 @@
-import { SafeAreaView, Text } from 'react-native';
+import { SafeAreaView, Text, TextInput } from 'react-native';
 import styled from '@emotion/native';
 import { useState } from 'react';
 import { auth } from '../shared/firebase';
+import { useSignIn } from '../Hooks/useLogin';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { CustomButton } from '../components/CustomButton';
-import { CustomInputText, CustomTotalInput } from '../components/CustomInput';
+import CustomButton from '../components/CustomButton';
+import CustomInput from '../components/CustomInput';
+import CustomInputTitle from '../components/CustomInputTitle';
 
 const LoginPage = ({ navigation: { navigate } }) => {
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
 
+  const { mutate: SignIn } = useSignIn();
+
   //이메일이나 비밀번호가 빈칸이면 alert출력
-  const handleLogin = () => {
+  const handleLogin = (email, password) => {
     if (!email) {
       alert('email을 입력해주세요.');
       return true;
-    }
-    if (!pw) {
+    } else if (!pw) {
       alert('password를 입력해주세요.');
       return true;
-    } else return;
-  };
-  // 로그인 요청
-  signInWithEmailAndPassword(auth, email, pw)
-    .then(() => {
+    } else {
       setEmail('');
       setPw('');
       navigate('Tabs', { screen: '메인 페이지' });
-    })
-    .catch((err) => {
-      //아이디가 없으면 아래 alert출력
-      if (err.message.includes('user-not-found')) {
-        alert('회원이 아닙니다. 회원가입을 먼저 진행해 주세요.');
-      } //비밀번호가 틀리면 아래 alert출력
-      if (err.message.includes('wrong-password')) {
-        alert('비밀번호가 틀렸습니다.');
-      }
-    });
+      SignIn({ email, password });
+    }
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <LoginContainer>
         {/* 이메일 인풋 */}
-        <CustomInputText>아이디</CustomInputText>
-        <CustomTotalInput
+        <CustomInputTitle>아이디</CustomInputTitle>
+        <CustomInput
+          keyboardType="email-address"
           value={email}
           onChangeText={(text) => setEmail(text)}
           textContentType="emailAddress"
           placeholder="이메일을 입력하세요"
         />
         {/* 비밀번호 인풋 */}
-        <CustomInputText>비밀번호</CustomInputText>
-        <CustomTotalInput
+        <CustomInputTitle>비밀번호</CustomInputTitle>
+        <CustomInput
           value={pw}
           onChangeText={(text) => setPw(text)}
           secureTextEntry={true}
           returnKeyType="send"
           placeholder="비밀번호를 입력하세요"
         />
+
         {/* 로그인 버튼 */}
-        <CustomButton title="Login" onPress={() => handleLogin()}>
+        <CustomButton title="Login" onPress={() => handleLogin(email, pw)}>
           <Text>로그인</Text>
         </CustomButton>
         {/* 회원가입 버튼 */}
