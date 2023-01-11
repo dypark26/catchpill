@@ -29,7 +29,7 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
 
   // 약 추가 로직
   const handleAddPill = () => {
-    addPill(newPill);
+    addPill({ newPill, navigate });
     if (isError) {
       console.log('새로운 약 추가 실패');
     }
@@ -39,12 +39,6 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
     }
     setPillName('');
     setTime('');
-    Alert.alert('약 추가 성공', '새로운 약 추가를 성공했습니다!', [
-      {
-        text: '확인',
-        onPress: () => navigate('Tabs', { screen: '마이 페이지' }),
-      },
-    ]);
   };
 
   const { mutate: editPill } = useEditPillData();
