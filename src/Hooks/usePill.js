@@ -29,8 +29,8 @@ export const useAddPillData = () => {
 
       // 기존 데이터를 snapshot 찍습니다.
       const previousPillList = queryClient.getQueryData(['pill-list']);
-      console.log('onMutate');
 
+      // 추가 성공 알럿 및 페이지 이동
       Alert.alert('약 추가 성공', '새로운 약 추가를 성공했습니다!', [
         {
           text: '확인',
@@ -38,13 +38,12 @@ export const useAddPillData = () => {
         },
       ]);
 
-      // 성공을 가정하고 새로운 값으로 업데이트합니다.
+      // 성공을 가정하고 새로운 값으로 업데이트합니다. // 버그 발생 지점
+      // old가 select 처리된 객체배열 데이터가 아니라 쿼리데이터의 전체 객체모임이라 정제 필요했음.
       queryClient.setQueryData(['pill-list'], (old) => {
-        // console.log('old', old);
         const prev = old.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         return [...prev, newPill];
       });
-      // old 수정
 
       // snapshot 한 값을 context 내부 값으로 반환합니다.
       return { previousPillList };
@@ -158,7 +157,45 @@ const EditPill = ({ pillId, newEditPill }) => {
 
 // 약 수정 함수
 export const useEditPillData = () => {
-  return useMutation(EditPill);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: EditPill,
+    onMutate: async ({ newEditPill, pillId, navigate }) => {
+      // 진행되는 모든 리패치들을 취소합니다.
+      await queryClient.cancelQueries({
+        queryKey: ['pill-list', pillId],
+      });
+
+      // 기존 데이터를 snapshot 찍습니다.
+      const previousPill = queryClient.getQueryData(['pill-list', pillId]);
+
+      // 수정 성공 알럿 및 페이지 이동
+      Alert.alert('약 수정 성공', '약 정보 수정을 성공했습니다!', [
+        { text: '확인', onPress: navigate('Tabs', { screen: '마이 페이지' }) },
+      ]);
+
+      // 성공을 가정하고 새로운 값으로 업데이트합니다.
+      queryClient.setQueryData(['pill-list', pillId], newEditPill);
+
+      // 기존값과 새로 업데이트 된 값을 context 내부 값으로 반환합니다.
+      return { previousPill, newEditPill };
+    },
+
+    // 실패시 onMutate 에서 반환한 리턴값 사용해 처리
+    onError: (__err, __newEditPill, context) => {
+      queryClient.setQueryData(
+        ['pill-list', context.pillId],
+        context.previousPill,
+      );
+    },
+
+    // 성공이든 실패든 끝나면 항상 리패치합니다.
+    onSettled: (pillId) => {
+      queryClient.invalidateQueries({
+        queryKey: ['pill-list', pillId],
+      });
+    },
+  });
 };
 
 // 약 삭제 함수 / firestore에 새로운 약 정보 삭제

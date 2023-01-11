@@ -17,7 +17,9 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
   const [time, setTime] = useState();
 
   // usePill 커스텀 훅에서 약 추가 함수 import
-  const { mutate: addPill, isError, isSuccess } = useAddPillData();
+  const { mutate: addPill } = useAddPillData();
+  // usePill 커스텀 훅에서 약 수정 함수 import
+  const { mutate: editPill } = useEditPillData();
 
   // 새로 추가될 약 정보
   const newPill = {
@@ -30,18 +32,16 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
   // 약 추가 로직
   const handleAddPill = () => {
     addPill({ newPill, navigate });
-    if (isError) {
-      console.log('새로운 약 추가 실패');
-    }
-    if (isSuccess) {
-      console.log(`${pillName} 추가 성공`);
-      ``;
-    }
+    // if (isError) {
+    //   console.log('새로운 약 추가 실패');
+    // }
+    // if (isSuccess) {
+    //   console.log(`${pillName} 추가 성공`);
+    //   ss``;
+    // }
     setPillName('');
     setTime('');
   };
-
-  const { mutate: editPill } = useEditPillData();
 
   // 수정된 약 정보
   let newEditPill = {};
@@ -54,19 +54,15 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
 
   // 약 편집 로직
   const handleEditPill = () => {
-    editPill({ pillId: id, newEditPill });
-    console.log('약 수정 성공!');
+    editPill({ pillId: id, newEditPill, navigate });
 
-    if (isError) {
-      console.log('약 수정 실패');
-    }
-    if (isSuccess) {
-      console.log(`${pillName} 수정 성공`);
-      ``;
-    }
-    Alert.alert('약 수정 성공', '약 정보 수정을 성공했습니다!', [
-      { text: '확인', onPress: navigate('Tabs', { screen: '마이 페이지' }) },
-    ]);
+    // if (isError) {
+    //   console.log('약 수정 실패');
+    // }
+    // if (isSuccess) {
+    //   console.log(`${pillName} 수정 성공`);
+    //   ``;
+    // }
   };
 
   return (
