@@ -1,12 +1,19 @@
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import styled from '@emotion/native';
 import { COLORS } from '../shared/color';
 import { useUID } from '../Hooks/useAuth';
 import { useGetPillData } from '../Hooks/usePill';
+import { useState } from 'react';
 
 const GraphicStatus = () => {
   const { data: uid } = useUID();
   const { isError, error, isLoading, data: pillList } = useGetPillData(uid);
+  const [message, setMessage] = useState(false);
+  console.log(message);
+
+  const toggleSupportMessage = () => {
+    setMessage((current) => !current);
+  };
 
   if (isError) {
     return (
@@ -35,16 +42,59 @@ const GraphicStatus = () => {
       }
     }
     const leftPillNum = totalPillNum - isTakenNum;
+    const opacity = isTakenNum / totalPillNum;
+    let color = '';
+
+    switch (true) {
+      case opacity >= 0 && opacity <= 0.2:
+        color = COLORS.POINT_COLOR_20;
+        break;
+      case opacity > 0.2 && opacity <= 0.4:
+        color = COLORS.POINT_COLOR_40;
+        break;
+      case opacity > 0.4 && opacity <= 0.6:
+        color = COLORS.POINT_COLOR_60;
+        break;
+      case opacity > 0.6 && opacity <= 0.8:
+        color = COLORS.POINT_COLOR_80;
+        break;
+      case opacity > 0.6 && opacity <= 1:
+        color = COLORS.POINT_COLOR_100;
+        break;
+    }
+    const supportArr = [
+      '건강한 습관으로 한 걸음 더!',
+      '오늘 어제보다 건강해졌어요!',
+      '에너지 뿜뿜!',
+      '오늘도 캐치필 하세요~',
+      '건강한 나를 만들어가요',
+    ];
+    let pop = Math.floor(Math.random() * supportArr.length);
+
     return (
       <GraphicContainer>
         <Supports>
-          <SupportEmoji>👏</SupportEmoji>
-          <SupportText>
-            와! 벌써 <TakenPill>{isTakenNum}</TakenPill>개나 드셨네요!
+          <TouchableOpacity onPress={toggleSupportMessage}>
+            <SupportEmoji>👏</SupportEmoji>
+          </TouchableOpacity>
+          <View style={{ display: message ? 'none' : 'flex' }}>
+            {opacity === 0 ? (
+              <SupportText>아직 하나도 먹지 않았어요!</SupportText>
+            ) : opacity === 1 ? (
+              <SupportText>축하합니다! 캐치필 달성!</SupportText>
+            ) : (
+              <SupportText>
+                와! 벌써 <TakenPill>{isTakenNum}</TakenPill>개나 드셨네요!
+              </SupportText>
+            )}
+          </View>
+
+          <SupportText style={{ display: message ? 'flex' : 'none' }}>
+            {supportArr[pop]}
           </SupportText>
         </Supports>
 
-        <LeftPill>
+        <LeftPill style={{ backgroundColor: color }}>
           <LeftpillText1>남은 약:</LeftpillText1>
           <LeftpillText2>{leftPillNum}</LeftpillText2>
           <LeftpillText3>/{totalPillNum}</LeftpillText3>
@@ -74,7 +124,7 @@ const SupportEmoji = styled.Text`
 const SupportText = styled.Text`
   text-align: center;
 
-  width: 300px;
+  width: 280px;
   padding: 10px;
   background-color: lightgrey;
   border-radius: 22px;
@@ -87,7 +137,7 @@ const TakenPill = styled.Text`
 
 const LeftPill = styled.View`
   margin-top: 15px;
-  background-color: rgba(15, 238, 198, 1);
+
   border-radius: 100px;
   width: 200px;
   height: 200px;
