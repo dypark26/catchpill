@@ -82,7 +82,7 @@ export const useToggleTakenPill = () => {
               dataArr.push({
                 ...doc.data(),
                 id: doc.id,
-                isTaken: togglePill.togglePayload.isTaken,
+                isTaken: !togglePill.togglePayload.isTaken,
               })
             : // 안 건드린 약입니다.
               dataArr.push({ ...doc.data(), id: doc.id });

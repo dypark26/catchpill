@@ -17,16 +17,16 @@ const SignupPage = ({ navigation: { navigate } }) => {
   const [password, setPassword] = useState(''); // 비밀번호 값 저장
   const [correctEmail, setCorrectEmail] = useState(true); // 이메일 유효성 검사
   const [correctPassword, setCorrectPassword] = useState(true); // 비밀번호 유효성 검사
-  const [visablePassword, setVisablePassword] = useState(true); // 비밀번호 보이게
+  const [visiblePassword, setVisiblePassword] = useState(true); // 비밀번호 보이게
 
-  const vaildEmail = (event) => {
+  const validEmail = (event) => {
     // 유효성 검사 후 false가 나오면 문구 띄우기
     regex.email.test(event.nativeEvent.text) === true
       ? setCorrectEmail(true)
       : setCorrectEmail(false);
   };
 
-  const vaildPassword = (event) => {
+  const validPassword = (event) => {
     // 유효성 검사 후 false가 나오면 문구 띄우기
     regex.password.test(event.nativeEvent.text) === true
       ? setCorrectPassword(true)
@@ -71,7 +71,7 @@ const SignupPage = ({ navigation: { navigate } }) => {
             placeholder="아이디를 입력해주세요!"
             value={email}
             onChangeText={setEmail}
-            onChange={(text) => vaildEmail(text)}
+            onChange={(text) => validEmail(text)}
             style={styles.textInputShadow}
           />
 
@@ -92,15 +92,15 @@ const SignupPage = ({ navigation: { navigate } }) => {
             placeholder="비밀번호를 입력해주세요!"
             value={password}
             onChangeText={setPassword}
-            onChange={(text) => vaildPassword(text)}
-            secureTextEntry={visablePassword}
+            onChange={(text) => validPassword(text)}
+            secureTextEntry={visiblePassword}
             style={styles.textInputShadow}
           />
           <PasswordShowButton
-            onPress={() => setVisablePassword(!visablePassword)}
+            onPress={() => setVisiblePassword(!visiblePassword)}
           >
             <FontAwesome
-              name={visablePassword ? 'eye' : 'eye-slash'}
+              name={visiblePassword ? 'eye' : 'eye-slash'}
               size={25}
               color="gray"
             />
