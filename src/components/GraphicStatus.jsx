@@ -86,19 +86,25 @@ const GraphicStatus = () => {
           </TouchableOpacity>
           <View style={{ display: message ? 'none' : 'flex' }}>
             {opacity === 0 ? (
-              <SupportText>아직 하나도 먹지 않았어요!</SupportText>
+              <SupportTextContainer>
+                <SupportText>아직 하나도 먹지 않았어요!</SupportText>
+              </SupportTextContainer>
             ) : opacity === 1 ? (
-              <SupportText>축하합니다! 캐치필 달성!</SupportText>
+              <SupportTextContainer>
+                <SupportText>축하합니다! 캐치필 달성!</SupportText>
+              </SupportTextContainer>
             ) : (
-              <SupportText>
-                와! 벌써 <TakenPill>{isTakenNum}</TakenPill>개나 드셨네요!
-              </SupportText>
+              <SupportTextContainer>
+                <SupportText>
+                  와! 벌써 <TakenPill>{isTakenNum}</TakenPill>개나 드셨네요!
+                </SupportText>
+              </SupportTextContainer>
             )}
           </View>
 
-          <SupportText style={{ display: message ? 'flex' : 'none' }}>
-            {supportArr[pop]}
-          </SupportText>
+          <SupportTextContainer style={{ display: message ? 'flex' : 'none' }}>
+            <SupportText>{supportArr[pop]}</SupportText>
+          </SupportTextContainer>
         </Supports>
         <LeftPill style={{ backgroundColor: color }}>
           <LeftpillText1>남은 약:</LeftpillText1>
@@ -120,21 +126,24 @@ const GraphicContainer = styled.View`
 
 const Supports = styled.View`
   flex-direction: row;
+  margin-top: 20px;
 `;
 const SupportEmoji = styled.Text`
   font-size: 35px;
   position: absolute;
   left: -50px;
 `;
-
-const SupportText = styled.Text`
-  text-align: center;
-
+const SupportTextContainer = styled.View`
   width: 280px;
   padding: 10px;
   background-color: lightgrey;
   border-radius: 22px;
   font-size: 20px;
+  overflow: hidden;
+`;
+
+const SupportText = styled.Text`
+  text-align: center;
 `;
 
 const TakenPill = styled.Text`
@@ -143,27 +152,28 @@ const TakenPill = styled.Text`
 
 const LeftPill = styled.View`
   margin-top: 15px;
-
   border-radius: 100px;
   width: 200px;
   height: 200px;
+  position: relative;
 `;
 
 const LeftpillText1 = styled.Text`
   font-size: 20px;
   font-weight: 400;
-  top: 20px;
-  left: 60px;
+  text-align: center;
+  top: 10%;
 `;
 const LeftpillText2 = styled.Text`
   font-size: 80px;
   font-weight: 600;
-  top: 20px;
-  left: 75px;
+  top: 15%;
+  text-align: center;
 `;
-
 const LeftpillText3 = styled.Text`
   font-size: 50px;
   font-weight: 300;
-  left: 170px;
+  position: absolute;
+  bottom: 0;
+  right: -15%;
 `;
