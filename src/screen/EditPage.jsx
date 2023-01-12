@@ -66,7 +66,7 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
 
   // 날짜 쪼개기
   const [dateValues, timeValues] = eachTime.split('T');
-  console.log('dateValues', dateValues.substr(1)); // dateValues 2023-01-12
+  // console.log('dateValues', dateValues.substr(1)); // dateValues 2023-01-12
   console.log('timeValues', timeValues.substr(0, 8)); // timeValues 09:30:53
   const [year, month, day] = dateValues.substr(1).split('-');
   const [hours, minutes, seconds] = timeValues.substr(0, 8).split(':');
@@ -83,8 +83,8 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
   );
 
   // eachTime과 editTime 비교
-  console.log('eachTime', eachTime);
-  console.log('eachTimeObject', eachTimeObject);
+  // console.log('eachTime', eachTime);
+  // console.log('eachTimeObject', eachTimeObject);
 
   const [editTime, setEditTime] = useState(eachTimeObject);
 
