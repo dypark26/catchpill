@@ -40,7 +40,6 @@ const MyPage = ({ navigation: { navigate } }) => {
         onPress={() =>
           navigate('Stacks', {
             screen: '수정 페이지',
-            // params: { isEdit: false, eachPillName: '', eachTime: '' },
             params: {
               isEdit: false,
               eachPillName: '',
