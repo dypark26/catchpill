@@ -154,7 +154,7 @@ const SupportEmoji = styled.Text`
 const SupportTextContainer = styled.View`
   width: 280px;
   padding: 10px;
-  background-color: lightgrey;
+  background-color: #f3f3f3;
   border-radius: 22px;
   font-size: 20px;
   overflow: hidden;
