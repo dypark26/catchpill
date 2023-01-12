@@ -121,7 +121,7 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
             {isEdit ? (
               <CustomButton
                 onPress={handleEditPill}
-                disabled={!pillName && !edited}
+                disabled={!pillName && eachTimeObject}
                 buttonText="수정"
               />
             ) : (
@@ -133,6 +133,7 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
             )}
             {/* 취소 / 돌아가기 버튼 */}
             <CustomButton
+              title="delete"
               onPress={() => navigate('Tabs', { screen: '마이 페이지' })}
               buttonText="취소"
             >
