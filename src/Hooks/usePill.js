@@ -44,7 +44,6 @@ export const useAddPillData = () => {
         const prev = old.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         return [...prev, newPill];
       });
-
       // snapshot 한 값을 context 내부 값으로 반환합니다.
       return { previousPillList };
     },
@@ -57,6 +56,7 @@ export const useAddPillData = () => {
     // 성공이든 실패든 끝나면 항상 리패치합니다.
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['pill-list'] });
+      console.log('성공');
     },
   });
 };

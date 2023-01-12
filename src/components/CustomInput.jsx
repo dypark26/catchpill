@@ -19,7 +19,7 @@ const CustomInput = ({
 }) => {
   return (
     <>
-      <CustonInputTitle>{title}</CustonInputTitle>
+      <CustomInputTitle>{title}</CustomInputTitle>
       <CustomInputStyle
         type={type}
         keyboardType={keyboardType}
@@ -43,9 +43,10 @@ const CustomInputStyle = styled.TextInput`
   padding: 10px 20px;
   border-radius: 10px;
   font-size: 20px;
+  background-color: white;
 `;
 //로그인타이틀CSS
-const CustonInputTitle = styled.Text`
+const CustomInputTitle = styled.Text`
   font-size: 28px;
   margin: 16px 0 10px 0;
 `;
