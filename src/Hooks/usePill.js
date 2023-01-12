@@ -11,10 +11,10 @@ import {
   where,
   deleteDoc,
 } from 'firebase/firestore';
+import { strToObjTime, translateTime } from '../utils/transTime';
 
 // 약 추가 함수 / firestore에 약 새로운 약 정보 추가
 const addPill = ({ newPill }) => {
-  console.log('newPill', newPill);
   return addDoc(collection(dbService, 'pill'), newPill);
 };
 
@@ -38,11 +38,9 @@ export const useAddPillData = () => {
         },
       ]);
 
-      // 성공을 가정하고 새로운 값으로 업데이트합니다. // 버그 발생 지점
-      // old가 select 처리된 객체배열 데이터가 아니라 쿼리데이터의 전체 객체모임이라 정제 필요했음.
+      // 성공을 가정하고 새로운 값으로 업데이트합니다.
       queryClient.setQueryData(['pill-list'], (old) => {
-        const prev = old.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        return [...prev, newPill];
+        return { ...old, docs: [...old.docs, { data: () => newPill }] };
       });
       // snapshot 한 값을 context 내부 값으로 반환합니다.
       return { previousPillList };
@@ -83,6 +81,40 @@ export const useGetPillData = (uid) => {
     select: (data) => {
       const dataArr = [];
       data.docs.forEach((doc) => dataArr.push({ ...doc.data(), id: doc.id }));
+
+      /**
+       * 시간 순서로 정렬해주는 함수입니다. ASCII기준으로 정렬을 했습니다. 정렬해준 상태로 내보내줍니다.
+       * 타임스탬프 반영 이후 리팩토링 해도 괜찮습니다.
+       * @see https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value
+       * @param {object} a
+       * @param {object} b
+       * @returns {number}
+       */
+      const sortByTime = (a, b) => {
+        /**
+         * @returns ["AM" or "PM", 시*60 + 분]
+         */
+        const parseTimeOrder = (timeString) => {
+          // 숫자 비교
+          const [selectTime, noon] = translateTime(
+            strToObjTime(timeString.time),
+          ).split(' ');
+          const [hour, minute] = selectTime.split(':');
+          return [noon, +hour * 60 + +minute];
+        };
+
+        const [noonA, minuteA] = parseTimeOrder(a);
+        const [noonB, minuteB] = parseTimeOrder(b);
+
+        // AM PM 비교
+        if (noonA > noonB) return 1;
+        if (noonA < noonB) return -1;
+        // 분단위 시간 비교
+        if (minuteA > minuteB) return 1;
+        if (minuteA < minuteB) return -1;
+      };
+
+      dataArr.sort(sortByTime);
       return dataArr;
     },
     refetchOnMount: true,
@@ -115,22 +147,20 @@ export const useToggleTakenPill = () => {
 
       // 새롭게 변형된 데이터로 설정합니다.
       queryClient.setQueryData(['pill-list'], (old) => {
-        const dataArr = [];
-        // useGetPillData에서 데이터를 선택하는 것과 유사한 파이어베이한 로직 문제입니다
-        old.docs.forEach((doc) => {
-          doc.id === togglePill.id
-            ? // 복용하면서 isTaken을 false에서 true로 변경합니다. 반대도 동작합니다.
-              dataArr.push({
-                ...doc.data(),
-                id: doc.id,
-                isTaken: !togglePill.togglePayload.isTaken,
-              })
-            : // 안 건드린 약입니다.
-              dataArr.push({ ...doc.data(), id: doc.id });
-        });
-
-        // 파이어베이스로 선택한 데이터를 반환합니다.
-        return dataArr;
+        return {
+          ...old,
+          docs: old.docs.map((doc) => {
+            return doc.id === togglePill.id
+              ? {
+                  ...doc,
+                  data: () => ({
+                    ...doc.data(),
+                    isTaken: !togglePill.togglePayload.isTaken,
+                  }),
+                }
+              : doc;
+          }),
+        };
       });
 
       // 저장한 값을 먼저 반환합니다.
@@ -219,11 +249,10 @@ export const useDeletePillData = () => {
 
       // 새롭게 변형된 데이터로 설정합니다.
       queryClient.setQueryData(['pill-list'], (old) => {
-        const data = [];
-        old.docs.forEach((doc) => data.push({ ...doc.data(), id: doc.id }));
-        console.log(data, deletedPill);
-
-        return data.filter((doc) => doc.id !== deletedPill);
+        return {
+          ...old,
+          docs: old.docs.filter((doc) => doc.id !== deletedPill),
+        };
       });
 
       return { previousPillList };

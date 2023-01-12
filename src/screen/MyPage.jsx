@@ -35,9 +35,9 @@ const MyPage = ({ navigation: { navigate } }) => {
 
   return (
     <MyPageContainer>
-      <PageTitle>나의 약관리</PageTitle>
       <FlatList
         data={pillList}
+        ListHeaderComponent={<PageTitle>나의 약관리</PageTitle>}
         keyExtractor={(item) => item.id}
         renderItem={({ item: { id, pillName, time } }) => (
           <ManageList
