@@ -63,8 +63,14 @@ export default MainPage;
 const styles = StyleSheet.create({
   screenArea: {
     ...Platform.select({
+      ios: {
+        flex: 1,
+        backgroundColor: 'white',
+      },
       android: {
+        flex: 1,
         paddingTop: 30,
+        backgroundColor: 'white',
       },
     }),
   },

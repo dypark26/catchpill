@@ -35,7 +35,6 @@ const MyPage = ({ navigation: { navigate } }) => {
 
   return (
     <SafeAreaView style={styles.screenArea}>
-      <PageTitle>나의 약관리</PageTitle>
       <FlatList
         data={pillList}
         ListHeaderComponent={<PageTitle>나의 약관리</PageTitle>}
@@ -89,11 +88,12 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         flex: 1,
-        backgroundColor: white,
+        backgroundColor: 'white',
       },
       android: {
         flex: 1,
         paddingTop: 20,
+        backgroundColor: 'white',
       },
     }),
   },
