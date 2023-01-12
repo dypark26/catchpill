@@ -19,7 +19,7 @@ const CustomInput = ({
 }) => {
   return (
     <>
-      <CustonInputTitle>{title}</CustonInputTitle>;
+      <CustonInputTitle>{title}</CustonInputTitle>
       <CustomInputStyle
         type={type}
         keyboardType={keyboardType}

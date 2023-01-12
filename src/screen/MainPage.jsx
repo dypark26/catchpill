@@ -40,16 +40,10 @@ const MainPage = ({ navigation: { navigate } }) => {
 
   return (
     <View>
-      <GraphicStatus />
-      <TouchableOpacity
-        onPress={() => navigate('Stacks', { screen: '로그인' })}
-      >
-        <Text>로그아웃</Text>
-      </TouchableOpacity>
-      {/* GraphicStatus가 들어오는 자리 */}
       <FlatList
         data={pillList}
         keyExtractor={(item) => item.id}
+        ListHeaderComponent={<GraphicStatus />}
         renderItem={({ item: { pillName, id, time, isTaken } }) => (
           <ToggleList
             pillName={pillName}
