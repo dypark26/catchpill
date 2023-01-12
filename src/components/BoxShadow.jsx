@@ -16,7 +16,7 @@ const BoxShadow = ({ children, color }) => {
             borderRadius: 16,
             margin: 10,
             backgroundColor: color,
-            shadowColor: '#d0d0d0',
+            shadowColor: '#bbbbbb',
             shadowOffset: {
               width: 0,
               height: 3,
