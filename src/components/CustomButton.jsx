@@ -7,10 +7,10 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 //로그인 회원가입: title="Login",수정 : title="Edit",삭제 : title="delete"
 
 //커스텀버튼
-const CustomButton = ({ onPress, children, disabled, title }) => {
+const CustomButton = ({ onPress, buttonText, disabled, title }) => {
   return (
     <CustomTotalButton title={title} onPress={onPress} disabled={disabled}>
-      <CustomButtonText>{children}</CustomButtonText>
+      <CustomButtonText>{buttonText}</CustomButtonText>
     </CustomTotalButton>
   );
 };

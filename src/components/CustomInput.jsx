@@ -15,9 +15,11 @@ const CustomInput = ({
   type,
   keyboardType,
   style,
+  title,
 }) => {
   return (
     <>
+      <CustonInputTitle>{title}</CustonInputTitle>;
       <CustomInputStyle
         type={type}
         keyboardType={keyboardType}
@@ -32,6 +34,10 @@ const CustomInput = ({
     </>
   );
 };
+// const CustomInputTitle = ({ children }) => {
+//   return <CustonInputTitle>{children}</CustonInputTitle>;
+// };
+
 //로그인 인풋CSS
 const CustomInputStyle = styled.TextInput`
   width: ${SCREEN_WIDTH - 40 + 'px'};
@@ -42,4 +48,10 @@ const CustomInputStyle = styled.TextInput`
   border-radius: 10px;
   font-size: 20px;
 `;
+//로그인타이틀CSS
+const CustonInputTitle = styled.Text`
+  font-size: 28px;
+  margin: 16px 0 10px 0;
+`;
+
 export default CustomInput;

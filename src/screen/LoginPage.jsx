@@ -3,10 +3,8 @@ import styled from '@emotion/native';
 import { useState } from 'react';
 import { auth } from '../shared/firebase';
 import { useSignIn } from '../Hooks/useLogin';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import CustomButton from '../components/CustomButton';
 import CustomInput from '../components/CustomInput';
-import CustomInputTitle from '../components/CustomInputTitle';
 
 const LoginPage = ({ navigation: { navigate } }) => {
   const [email, setEmail] = useState('');
@@ -33,32 +31,36 @@ const LoginPage = ({ navigation: { navigate } }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <LoginContainer>
         {/* 이메일 인풋 */}
-        <CustomInputTitle>아이디</CustomInputTitle>
         <CustomInput
           keyboardType="email-address"
           value={email}
           onChangeText={(text) => setEmail(text)}
           textContentType="emailAddress"
           placeholder="이메일을 입력하세요"
+          title="아이디"
         />
         {/* 비밀번호 인풋 */}
-        <CustomInputTitle>비밀번호</CustomInputTitle>
         <CustomInput
           value={pw}
           onChangeText={(text) => setPw(text)}
           secureTextEntry={true}
           returnKeyType="send"
           placeholder="비밀번호를 입력하세요"
+          title="비밀번호"
         />
 
         {/* 로그인 버튼 */}
-        <CustomButton title="Login" onPress={() => handleLogin(email, pw)}>
-          <Text>로그인</Text>
-        </CustomButton>
+        <CustomButton
+          title="Login"
+          onPress={() => handleLogin(email, pw)}
+          buttonText="로그인"
+        />
         {/* 회원가입 버튼 */}
-        <CustomButton title="Login" onPress={() => navigate('회원가입')}>
-          <Text>회원가입</Text>
-        </CustomButton>
+        <CustomButton
+          title="Login"
+          onPress={() => navigate('회원가입')}
+          buttonText="회원가입"
+        />
       </LoginContainer>
     </SafeAreaView>
   );
