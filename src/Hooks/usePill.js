@@ -81,6 +81,7 @@ export const useGetPillData = (uid) => {
     refetchOnWindowFocus: true,
     // TODO: 실시간 업데이트 반영 옵션 활성화하기
     select: (data) => {
+      console.log(data);
       const dataArr = [];
       data.docs.forEach((doc) => dataArr.push({ ...doc.data(), id: doc.id }));
 
@@ -131,21 +132,22 @@ export const useToggleTakenPill = () => {
       // 새롭게 변형된 데이터로 설정합니다.
       queryClient.setQueryData(['pill-list'], (old) => {
         const dataArr = [];
-        // useGetPillData에서 데이터를 선택하는 것과 유사한 파이어베이한 로직 문제입니다
         old.docs.forEach((doc) => {
-          doc.id === togglePill.id
-            ? // 복용하면서 isTaken을 false에서 true로 변경합니다. 반대도 동작합니다.
-              dataArr.push({
-                ...doc.data(),
-                id: doc.id,
-                isTaken: !togglePill.togglePayload.isTaken,
-              })
-            : // 안 건드린 약입니다.
-              dataArr.push({ ...doc.data(), id: doc.id });
+          if (doc.id === togglePill.id) {
+            dataArr.push({
+              ...doc,
+              data: () => {
+                return {
+                  ...doc.data(),
+                  isTaken: !togglePill.togglePayload.isTaken,
+                };
+              },
+            });
+          } else {
+            dataArr.push({ ...doc });
+          }
         });
-
-        // 파이어베이스로 선택한 데이터를 반환합니다.
-        return dataArr;
+        return { ...old, docs: [] };
       });
 
       // 저장한 값을 먼저 반환합니다.
