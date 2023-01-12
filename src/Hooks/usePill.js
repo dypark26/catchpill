@@ -14,7 +14,6 @@ import {
 
 // 약 추가 함수 / firestore에 약 새로운 약 정보 추가
 const addPill = ({ newPill }) => {
-  console.log('newPill', newPill);
   return addDoc(collection(dbService, 'pill'), newPill);
 };
 
@@ -38,11 +37,9 @@ export const useAddPillData = () => {
         },
       ]);
 
-      // 성공을 가정하고 새로운 값으로 업데이트합니다. // 버그 발생 지점
-      // old가 select 처리된 객체배열 데이터가 아니라 쿼리데이터의 전체 객체모임이라 정제 필요했음.
+      // 성공을 가정하고 새로운 값으로 업데이트합니다.
       queryClient.setQueryData(['pill-list'], (old) => {
-        const prev = old.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        return [...prev, newPill];
+        return { ...old, docs: [...old.docs, { data: () => newPill }] };
       });
 
       // snapshot 한 값을 context 내부 값으로 반환합니다.
@@ -81,7 +78,6 @@ export const useGetPillData = (uid) => {
     refetchOnWindowFocus: true,
     // TODO: 실시간 업데이트 반영 옵션 활성화하기
     select: (data) => {
-      console.log(data);
       const dataArr = [];
       data.docs.forEach((doc) => dataArr.push({ ...doc.data(), id: doc.id }));
 
@@ -131,23 +127,20 @@ export const useToggleTakenPill = () => {
 
       // 새롭게 변형된 데이터로 설정합니다.
       queryClient.setQueryData(['pill-list'], (old) => {
-        const dataArr = [];
-        old.docs.forEach((doc) => {
-          if (doc.id === togglePill.id) {
-            dataArr.push({
-              ...doc,
-              data: () => {
-                return {
-                  ...doc.data(),
-                  isTaken: !togglePill.togglePayload.isTaken,
-                };
-              },
-            });
-          } else {
-            dataArr.push({ ...doc });
-          }
-        });
-        return { ...old, docs: [] };
+        return {
+          ...old,
+          docs: old.docs.map((doc) => {
+            return doc.id === togglePill.id
+              ? {
+                  ...doc,
+                  data: () => ({
+                    ...doc.data(),
+                    isTaken: !togglePill.togglePayload.isTaken,
+                  }),
+                }
+              : doc;
+          }),
+        };
       });
 
       // 저장한 값을 먼저 반환합니다.
@@ -236,11 +229,10 @@ export const useDeletePillData = () => {
 
       // 새롭게 변형된 데이터로 설정합니다.
       queryClient.setQueryData(['pill-list'], (old) => {
-        const data = [];
-        old.docs.forEach((doc) => data.push({ ...doc.data(), id: doc.id }));
-        console.log(data, deletedPill);
-
-        return data.filter((doc) => doc.id !== deletedPill);
+        return {
+          ...old,
+          docs: old.docs.filter((doc) => doc.id !== deletedPill),
+        };
       });
 
       return { previousPillList };
