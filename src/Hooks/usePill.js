@@ -11,6 +11,7 @@ import {
   where,
   deleteDoc,
 } from 'firebase/firestore';
+import { strToObjTime, translateTime } from '../utils/transTime';
 
 // 약 추가 함수 / firestore에 약 새로운 약 정보 추가
 const addPill = ({ newPill }) => {
@@ -90,8 +91,27 @@ export const useGetPillData = (uid) => {
        * @returns {number}
        */
       const sortByTime = (a, b) => {
-        if (a.time > b.time) return 1;
-        if (a.time < b.time) return -1;
+        /**
+         * @returns ["AM" or "PM", 시*60 + 분]
+         */
+        const parseTimeOrder = (timeString) => {
+          // 숫자 비교
+          const [selectTime, noon] = translateTime(
+            strToObjTime(timeString.time),
+          ).split(' ');
+          const [hour, minute] = selectTime.split(':');
+          return [noon, +hour * 60 + +minute];
+        };
+
+        const [noonA, minuteA] = parseTimeOrder(a);
+        const [noonB, minuteB] = parseTimeOrder(b);
+
+        // AM PM 비교
+        if (noonA > noonB) return 1;
+        if (noonA < noonB) return -1;
+        // 분단위 시간 비교
+        if (minuteA > minuteB) return 1;
+        if (minuteA < minuteB) return -1;
       };
 
       dataArr.sort(sortByTime);
