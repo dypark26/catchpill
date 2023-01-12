@@ -46,6 +46,7 @@ const ToggleListItemTitle = styled.Text`
 const ToggleListItemTime = styled.Text`
   font-size: 16px;
   margin: 0 0 0 16px;
+  text-overflow: ellipsis;
 `;
 
 export default ToggleList;
