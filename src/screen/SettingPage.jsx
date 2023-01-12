@@ -1,5 +1,4 @@
-import { CustomButton } from '../components';
-import { PageContainer } from '../components/index';
+import { CustomButton, PageContainer } from '../components/';
 import styled from '@emotion/native';
 
 const SettingPage = ({ navigation: { navigate } }) => {
