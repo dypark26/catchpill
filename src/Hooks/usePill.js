@@ -83,6 +83,21 @@ export const useGetPillData = (uid) => {
     select: (data) => {
       const dataArr = [];
       data.docs.forEach((doc) => dataArr.push({ ...doc.data(), id: doc.id }));
+
+      /**
+       * 시간 순서로 정렬해주는 함수입니다. ASCII기준으로 정렬을 했습니다. 정렬해준 상태로 내보내줍니다.
+       * 타임스탬프 반영 이후 리팩토링 해도 괜찮습니다.
+       * @see https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value
+       * @param {object} a
+       * @param {object} b
+       * @returns {number}
+       */
+      const sortByTime = (a, b) => {
+        if (a.time > b.time) return 1;
+        if (a.time < b.time) return -1;
+      };
+
+      dataArr.sort(sortByTime);
       return dataArr;
     },
     refetchOnMount: true,
