@@ -1,8 +1,9 @@
 import styled from '@emotion/native';
-import { Text, View, FlatList } from 'react-native';
+import { Text, View, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import { ManageList, CustomButton } from '../components';
 import { useUID } from '../Hooks/useAuth';
 import { useGetPillData } from '../Hooks/usePill';
+import { PageContainer } from '../components/index';
 
 const MyPage = ({ navigation: { navigate } }) => {
   const { data: uid } = useUID();
@@ -11,30 +12,30 @@ const MyPage = ({ navigation: { navigate } }) => {
   // 에러 핸들링: 통신 실패의 경우 보여주는 화면입니다.
   if (isError) {
     return (
-      <MyPageContainer>
+      <PageContainer>
         <PageTitle>나의 약관리</PageTitle>
         <View>
           <Text>에러</Text>
           <Text>{error.message}</Text>
         </View>
-      </MyPageContainer>
+      </PageContainer>
     );
   }
 
   // 통신 중
   if (isLoading) {
     return (
-      <MyPageContainer>
+      <PageContainer>
         <PageTitle>나의 약관리</PageTitle>
         <View>
           <Text>Loading...</Text>
         </View>
-      </MyPageContainer>
+      </PageContainer>
     );
   }
 
   return (
-    <MyPageContainer>
+    <PageContainer>
       <FlatList
         data={pillList}
         ListHeaderComponent={<PageTitle>나의 약관리</PageTitle>}
@@ -66,14 +67,9 @@ const MyPage = ({ navigation: { navigate } }) => {
           </CustomButtonContainer>
         }
       />
-    </MyPageContainer>
+    </PageContainer>
   );
 };
-
-const MyPageContainer = styled.SafeAreaView`
-  flex: 1;
-  background-color: white;
-`;
 
 const PageTitle = styled.Text`
   font-size: 36px;

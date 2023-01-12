@@ -1,12 +1,15 @@
-import { TextButton } from '../components';
-import { View } from 'react-native';
+import { CustomButton } from '../components';
+import { PageContainer } from '../components/index';
 
-const SettingPage = () => {
+const SettingPage = ({ navigation: { navigate } }) => {
   return (
-    <View>
-      <TextButton buttonColor="aqua" buttonText="로그아웃" />
-      <TextButton buttonColor="aqua" buttonText="다크 모드" />
-    </View>
+    <PageContainer>
+      <CustomButton
+        buttonText="로그아웃"
+        onPress={() => navigate('Stacks', { screen: '로그인' })}
+      />
+      <CustomButton buttonText="다크 모드" />
+    </PageContainer>
   );
 };
 

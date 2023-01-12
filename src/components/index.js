@@ -4,6 +4,7 @@ import TextButton from './TextButton';
 import ToggleList from './ToggleList';
 import CustomButton from './CustomButton';
 import CustomInput from './CustomInput';
+import PageContainer from './PageContainer';
 
 export {
   ManageList,
@@ -12,4 +13,5 @@ export {
   GraphicStatus,
   CustomButton,
   CustomInput,
+  PageContainer,
 };
