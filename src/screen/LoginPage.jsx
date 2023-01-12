@@ -7,6 +7,7 @@ import { ToggleModeButton } from '../context/Theme';
 import { useSignIn } from '../Hooks/useAuth';
 import CustomButton from '../components/CustomButton';
 import CustomInput from '../components/CustomInput';
+import { PageContainer } from '../components/index';
 
 const LoginPage = ({ navigation: { navigate } }) => {
   const { theme } = useContext(ThemeContext);
@@ -52,7 +53,7 @@ const LoginPage = ({ navigation: { navigate } }) => {
   };
 
   return (
-    <SafeAreaView style={styles.screenArea}>
+    <PageContainer>
       <LoginContainer theme={theme}>
         <ToggleModeButton />
         {/* 이메일 인풋 */}
@@ -97,7 +98,7 @@ const LoginPage = ({ navigation: { navigate } }) => {
           buttonText="회원가입"
         />
       </LoginContainer>
-    </SafeAreaView>
+    </PageContainer>
   );
 };
 
@@ -112,17 +113,3 @@ const LoginErrorText = styled.Text`
   color: ${COLORS.DANGER};
   padding: 10px 0;
 `;
-
-const styles = StyleSheet.create({
-  screenArea: {
-    ...Platform.select({
-      ios: {
-        flex: 1,
-      },
-      android: {
-        flex: 1,
-        paddingTop: 20,
-      },
-    }),
-  },
-});

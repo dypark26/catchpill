@@ -1,9 +1,10 @@
 import { GraphicStatus } from '../components/index';
-import { Text, FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { Text, FlatList } from 'react-native';
 import { useUID } from '../Hooks/useAuth';
 import { useGetPillData } from '../Hooks/usePill';
 import { ToggleList } from '../components';
 import { useEffect, useState } from 'react';
+import { PageContainer } from '../components/index';
 
 const MainPage = () => {
   const { data: uid } = useUID();
@@ -23,23 +24,23 @@ const MainPage = () => {
 
   if (isError) {
     return (
-      <SafeAreaView style={styles.screenArea}>
+      <PageContainer>
         <Text>에러 페이지</Text>
         <Text>{error.message}</Text>
-      </SafeAreaView>
+      </PageContainer>
     );
   }
 
   if (isLoading || !initialLoad) {
     return (
-      <SafeAreaView style={styles.screenArea}>
+      <PageContainer>
         <Text>로딩 화면</Text>
-      </SafeAreaView>
+      </PageContainer>
     );
   }
 
   return (
-    <SafeAreaView style={styles.screenArea}>
+    <PageContainer>
       <FlatList
         data={pillList}
         keyExtractor={(item) => item.id}
@@ -54,24 +55,8 @@ const MainPage = () => {
           />
         )}
       />
-    </SafeAreaView>
+    </PageContainer>
   );
 };
 
 export default MainPage;
-
-const styles = StyleSheet.create({
-  screenArea: {
-    ...Platform.select({
-      ios: {
-        flex: 1,
-        backgroundColor: 'white',
-      },
-      android: {
-        flex: 1,
-        paddingTop: 30,
-        backgroundColor: 'white',
-      },
-    }),
-  },
-});

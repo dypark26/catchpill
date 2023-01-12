@@ -3,6 +3,7 @@ import { Text, View, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import { ManageList, CustomButton } from '../components';
 import { useUID } from '../Hooks/useAuth';
 import { useGetPillData } from '../Hooks/usePill';
+import { PageContainer } from '../components/index';
 
 const MyPage = ({ navigation: { navigate } }) => {
   const { data: uid } = useUID();
@@ -11,30 +12,30 @@ const MyPage = ({ navigation: { navigate } }) => {
   // 에러 핸들링: 통신 실패의 경우 보여주는 화면입니다.
   if (isError) {
     return (
-      <SafeAreaView style={styles.screenArea}>
+      <PageContainer>
         <PageTitle>나의 약관리</PageTitle>
         <View>
           <Text>에러</Text>
           <Text>{error.message}</Text>
         </View>
-      </SafeAreaView>
+      </PageContainer>
     );
   }
 
   // 통신 중
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.screenArea}>
+      <PageContainer>
         <PageTitle>나의 약관리</PageTitle>
         <View>
           <Text>Loading...</Text>
         </View>
-      </SafeAreaView>
+      </PageContainer>
     );
   }
 
   return (
-    <SafeAreaView style={styles.screenArea}>
+    <PageContainer>
       <FlatList
         data={pillList}
         ListHeaderComponent={<PageTitle>나의 약관리</PageTitle>}
@@ -66,7 +67,7 @@ const MyPage = ({ navigation: { navigate } }) => {
           </CustomButtonContainer>
         }
       />
-    </SafeAreaView>
+    </PageContainer>
   );
 };
 
@@ -82,21 +83,5 @@ const CustomButtonContainer = styled.View`
   align-items: center;
   margin: -8px 8px 0px;
 `;
-
-const styles = StyleSheet.create({
-  screenArea: {
-    ...Platform.select({
-      ios: {
-        flex: 1,
-        backgroundColor: 'white',
-      },
-      android: {
-        flex: 1,
-        paddingTop: 20,
-        backgroundColor: 'white',
-      },
-    }),
-  },
-});
 
 export default MyPage;
