@@ -7,9 +7,8 @@ export const SignIn = async (payload) => {
   const { email, password } = payload;
   Keyboard.dismiss(); // 버튼 클릭 시 키보드 접기
   return signInWithEmailAndPassword(auth, email, password);
-  //navigate('Tabs', { screen: '메인 페이지' })
 };
-export const useSignIn = () => {
+export const useSignIn = (navigate) => {
   return useMutation(SignIn, {
     onError: (err) => {
       if (err.message.includes('user-not-found')) {
@@ -19,8 +18,9 @@ export const useSignIn = () => {
         alert('비밀번호가 틀렸습니다.');
       }
     },
-    onSuccess: ({ navigate }) => {
-      //navigate('Tabs', { screen: '메인 페이지' });
+    onSuccess: () => {
+      //네비게이션 메인페이지 이동
+      navigate('Tabs', { screen: '메인 페이지' });
     },
   });
 };

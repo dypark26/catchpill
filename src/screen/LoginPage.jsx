@@ -25,7 +25,7 @@ const LoginPage = ({ navigation: { navigate } }) => {
   const matchedEmail = email.match(regex.email);
   const matchedPw = password.match(regex.password);
 
-  const { onSuccess, mutate: SignIn } = useSignIn();
+  const { mutate: SignIn } = useSignIn(navigate);
 
   //이메일이나 비밀번호가 빈칸이면 alert출력
   const handleLogin = (email, password) => {
@@ -48,7 +48,6 @@ const LoginPage = ({ navigation: { navigate } }) => {
       SignIn({ email, password, navigate });
       setEmail('');
       setpassword('');
-      navigate('Tabs', { screen: '메인 페이지' });
     }
   };
 
