@@ -119,9 +119,9 @@ const GraphicStatus = () => {
 export default GraphicStatus;
 
 const GraphicContainer = styled.View`
-  background-color: white;
   align-items: center;
   padding-bottom: 10px;
+  margin: 0 0 12px;
 `;
 
 const Supports = styled.View`

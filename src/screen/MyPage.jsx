@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 import { Text, View, FlatList } from 'react-native';
-import { ManageList } from '../components';
+import { ManageList, CustomButton } from '../components';
 import { useUID } from '../Hooks/useAuth';
 import { useGetPillData } from '../Hooks/usePill';
 
@@ -36,20 +36,6 @@ const MyPage = ({ navigation: { navigate } }) => {
   return (
     <MyPageContainer>
       <PageTitle>나의 약관리</PageTitle>
-      <AddPill
-        onPress={() =>
-          navigate('Stacks', {
-            screen: '수정 페이지',
-            params: {
-              isEdit: false,
-              eachPillName: '',
-              eachTime: JSON.stringify(new Date()),
-            },
-          })
-        }
-      >
-        <Text>약추가</Text>
-      </AddPill>
       <FlatList
         data={pillList}
         keyExtractor={(item) => item.id}
@@ -61,6 +47,24 @@ const MyPage = ({ navigation: { navigate } }) => {
             navigate={navigate}
           />
         )}
+        ListFooterComponent={
+          <CustomButtonContainer>
+            <CustomButton
+              title="Login"
+              onPress={() =>
+                navigate('Stacks', {
+                  screen: '수정 페이지',
+                  params: {
+                    isEdit: false,
+                    eachPillName: '',
+                    eachTime: JSON.stringify(new Date()),
+                  },
+                })
+              }
+              buttonText="새로운 약 추가하기"
+            />
+          </CustomButtonContainer>
+        }
       />
     </MyPageContainer>
   );
@@ -77,11 +81,10 @@ const PageTitle = styled.Text`
   margin: 20px 16px;
 `;
 
-const AddPill = styled.TouchableOpacity`
-  background-color: #f8f8f8;
-  margin: 8px 16px;
-  height: 80px;
-  border-radius: 16px;
+const CustomButtonContainer = styled.View`
+  width: 100%;
+  align-items: center;
+  margin: -8px 0 16px;
 `;
 
 export default MyPage;
