@@ -4,7 +4,7 @@ import { COLORS } from '../shared/color';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-//로그인 인풋
+//로그인 인풋 title로 제목 기재
 const CustomInput = ({
   value,
   onChange,
@@ -34,10 +34,6 @@ const CustomInput = ({
     </>
   );
 };
-// const CustomInputTitle = ({ children }) => {
-//   return <CustonInputTitle>{children}</CustonInputTitle>;
-// };
-
 //로그인 인풋CSS
 const CustomInputStyle = styled.TextInput`
   width: ${SCREEN_WIDTH - 40 + 'px'};
