@@ -1,31 +1,37 @@
 import { View } from 'react-native';
 import styled from '@emotion/native';
 
-const BoxShadow = ({ children }) => {
+const BoxShadow = ({ children, color }) => {
   return (
     <View
       style={{
         ...Platform.select({
           ios: {
-            paddingHorizontal: 10,
-            paddingVertical: 20,
+            height: 80,
+            paddingHorizontal: 16,
+            paddingVertical: 12,
+            marginHorizontal: 16,
+            marginVertical: 8,
             borderRadius: 16,
             margin: 10,
-            backgroundColor: 'white',
-            shadowColor: '#000',
+            backgroundColor: color,
+            shadowColor: '#d0d0d0',
             shadowOffset: {
               width: 0,
-              height: 2,
+              height: 3,
             },
-            shadowOpacity: 0.23,
-            shadowRadius: 2.62,
+            shadowOpacity: 0.29,
+            shadowRadius: 4.65,
           },
           android: {
-            paddingHorizontal: 10,
-            paddingVertical: 20,
+            height: 80,
+            paddingHorizontal: 16,
+            paddingVertical: 12,
+
+            marginHorizontal: 16,
+            marginVertical: 8,
             borderRadius: 16,
-            margin: 10,
-            backgroundColor: 'white',
+            backgroundColor: color,
             elevation: 4,
           },
         }),

@@ -92,7 +92,7 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
       {/* 수정 폼 */}
       <EditForm>
         {/* 약 이름 인풋 */}
-        <BoxShadow>
+        <BoxShadow color="white">
           <PillInfoTitle>약 이름 :</PillInfoTitle>
           <PillNameInput
             defaultValue={eachPillName}
@@ -104,7 +104,7 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
 
         {/* 약 복용시간 타임피커 */}
         <TouchableOpacity onPress={handleOpenModal}>
-          <BoxShadow>
+          <BoxShadow color="white">
             <PillInfoTitle>복용 시간 :</PillInfoTitle>
             {isEdit ? (
               <TimePicker>{localEditTime}</TimePicker>

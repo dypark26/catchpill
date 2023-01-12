@@ -29,7 +29,7 @@ const ManageList = ({ id, pillName, time, navigate }) => {
   };
 
   return (
-    <BoxShadow>
+    <BoxShadow color="white">
       <ManageListTitle>{pillName}</ManageListTitle>
       <ButtonGroupContainer>
         <TextButton

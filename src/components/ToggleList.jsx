@@ -12,7 +12,7 @@ const ToggleList = ({ pillName, time, id, isTaken, uid }) => {
   const mainPageTime = translateTime(objTime);
 
   return (
-    <BoxShadow>
+    <BoxShadow color={isTaken ? COLORS.POINT_COLOR_100 : 'white'}>
       <ToggleListItemTextContainer>
         <ToggleListItemTitle>{pillName}</ToggleListItemTitle>
         <ToggleListItemTime>{mainPageTime}</ToggleListItemTime>
