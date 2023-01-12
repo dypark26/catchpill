@@ -2,6 +2,7 @@ import { COLORS } from '../shared/color';
 import styled from '@emotion/native';
 import ToggleButton from './ToggleButton';
 import { strToObjTime, translateTime } from '../utils/transTime';
+import { View, StyleSheet } from 'react-native';
 
 // TODO: 조건부 스타일링 isTaken값이 false랑 true에 따라 다른 UI가 보입니다.
 const ToggleList = ({ pillName, time, id, isTaken, uid }) => {
@@ -10,13 +11,15 @@ const ToggleList = ({ pillName, time, id, isTaken, uid }) => {
   const mainPageTime = translateTime(objTime);
 
   return (
-    <ToggleListItem isTaken={isTaken}>
-      <ToggleListItemTextContainer>
-        <ToggleListItemTitle>{pillName}</ToggleListItemTitle>
-        <ToggleListItemTime>{mainPageTime}</ToggleListItemTime>
-      </ToggleListItemTextContainer>
-      <ToggleButton id={id} togglePayload={togglePayload} />
-    </ToggleListItem>
+    <View style={styles.list}>
+      <ToggleListItem isTaken={isTaken}>
+        <ToggleListItemTextContainer>
+          <ToggleListItemTitle>{pillName}</ToggleListItemTitle>
+          <ToggleListItemTime>{mainPageTime}</ToggleListItemTime>
+        </ToggleListItemTextContainer>
+        <ToggleButton id={id} togglePayload={togglePayload} />
+      </ToggleListItem>
+    </View>
   );
 };
 
@@ -48,5 +51,24 @@ const ToggleListItemTime = styled.Text`
   margin: 0 0 0 16px;
   text-overflow: ellipsis;
 `;
+
+const styles = StyleSheet.create({
+  list: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#d0d0d0',
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
+  },
+});
 
 export default ToggleList;

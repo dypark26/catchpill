@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 import { COLORS } from '../shared/color';
-import { Alert } from 'react-native';
+import { View, Alert, StyleSheet } from 'react-native';
 import { useDeletePillData } from '../Hooks/usePill';
 import TextButton from './TextButton';
 
@@ -28,33 +28,35 @@ const ManageList = ({ id, pillName, time, navigate }) => {
   };
 
   return (
-    <ManageListContainer>
-      <ManageListTitle>{pillName}</ManageListTitle>
-      <ButtonGroupContainer>
-        <TextButton
-          // 클릭하면 페이지 이동
-          buttonColor={COLORS.BLACK}
-          buttonText="편집"
-          onPress={() =>
-            navigate('Stacks', {
-              screen: '수정 페이지',
-              params: {
-                id: id,
-                isEdit: true,
-                eachPillName: pillName,
-                eachTime: time,
-              },
-            })
-          }
-        />
-        <TextButton
-          // 클릭하면 alert()
-          buttonColor={COLORS.DANGER}
-          buttonText="삭제"
-          onPress={() => handleDeletePill(id)}
-        />
-      </ButtonGroupContainer>
-    </ManageListContainer>
+    <View style={styles.list}>
+      <ManageListContainer style={styles.list}>
+        <ManageListTitle>{pillName}</ManageListTitle>
+        <ButtonGroupContainer>
+          <TextButton
+            // 클릭하면 페이지 이동
+            buttonColor={COLORS.BLACK}
+            buttonText="편집"
+            onPress={() =>
+              navigate('Stacks', {
+                screen: '수정 페이지',
+                params: {
+                  id: id,
+                  isEdit: true,
+                  eachPillName: pillName,
+                  eachTime: time,
+                },
+              })
+            }
+          />
+          <TextButton
+            // 클릭하면 alert()
+            buttonColor={COLORS.DANGER}
+            buttonText="삭제"
+            onPress={() => handleDeletePill(id)}
+          />
+        </ButtonGroupContainer>
+      </ManageListContainer>
+    </View>
   );
 };
 
@@ -80,5 +82,24 @@ const ButtonGroupContainer = styled.View`
   justify-content: flex-end;
   gap: 16px;
 `;
+
+const styles = StyleSheet.create({
+  list: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#d0d0d0',
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
+  },
+});
 
 export default ManageList;
