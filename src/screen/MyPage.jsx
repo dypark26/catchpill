@@ -72,6 +72,7 @@ const MyPage = ({ navigation: { navigate } }) => {
 
 const MyPageContainer = styled.SafeAreaView`
   flex: 1;
+  background-color: white;
 `;
 
 const PageTitle = styled.Text`
@@ -84,7 +85,7 @@ const PageTitle = styled.Text`
 const CustomButtonContainer = styled.View`
   width: 100%;
   align-items: center;
-  margin: -8px 0 16px;
+  margin: -8px 8px 0px;
 `;
 
 export default MyPage;

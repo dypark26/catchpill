@@ -19,8 +19,8 @@ const CustomButton = ({ onPress, buttonText, disabled, title }) => {
 const CustomTotalButton = styled.TouchableOpacity`
   width: ${(props) =>
     props.title == 'Login'
-      ? SCREEN_WIDTH - 40 + 'px'
-      : SCREEN_WIDTH / 2.3 + 'px'};
+      ? SCREEN_WIDTH - 32 + 'px'
+      : (SCREEN_WIDTH - 48) / 2 + 'px'};
   align-items: center;
   justify-content: center;
   height: 80px;
@@ -31,8 +31,10 @@ const CustomTotalButton = styled.TouchableOpacity`
       ? COLORS.POINT_COLOR_40
       : COLORS.POINT_COLOR_100};
   //title이 delete면 회색, disabled이 활성화됐으면 연한색,아니라면 진한색 출력
-  border-radius: 10px;
+  border-radius: 16px;
   margin-top: 15px;
+  margin-right: ${(props) =>
+    props.buttonText == '수정' || '저장' ? '16px' : '0px'};
 `;
 
 //버튼 텍스트 CSS

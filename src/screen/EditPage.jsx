@@ -12,6 +12,7 @@ import { COLORS } from '../shared/color';
 import { useUID } from '../Hooks/useAuth';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { strToObjTime, translateTime } from '../utils/transTime';
+import { CustomButton } from '../components';
 
 const EditPage = ({ navigation: { navigate }, route: { params } }) => {
   // '편집'에서 EditPage 들어오면
@@ -87,9 +88,7 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
 
   return (
     <EditPageContainer>
-      {/* page 의 title */}
       <EditPageTitle>나의 약 정보</EditPageTitle>
-      {/* 수정 폼 */}
       <EditForm>
         {/* 약 이름 인풋 */}
         <PillInfoContainer>
@@ -105,7 +104,6 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
         <TouchableOpacity onPress={handleOpenModal}>
           <PillInfoContainer>
             <PillInfoTitle>복용 시간 :</PillInfoTitle>
-            {/* <TimePicker>{time.toLocaleString()}</TimePicker> */}
             {isEdit ? (
               <TimePicker>{localEditTime}</TimePicker>
             ) : (
@@ -119,18 +117,20 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
           {isEdit ? (
             <CustomButton
               onPress={handleEditPill}
-              disabled={!pillName && !time}
-            >
-              <Text>수정</Text>
-            </CustomButton>
+              disabled={!pillName && eachTimeObject}
+              buttonText="수정"
+            />
           ) : (
-            <CustomButton onPress={handleAddPill} disabled={!pillName || !time}>
-              <Text>저장</Text>
-            </CustomButton>
+            <CustomButton
+              onPress={handleAddPill}
+              disabled={!pillName || !time}
+              buttonText="저장"
+            />
           )}
           {/* 취소 / 돌아가기 버튼 */}
           <CustomButton
             onPress={() => navigate('Tabs', { screen: '마이 페이지' })}
+            buttonText="취소"
           >
             <Text>취소</Text>
           </CustomButton>
@@ -176,14 +176,16 @@ export default EditPage;
 // 로컬 디바이스 화면크기 가져오기
 const windowHeight = Dimensions.get('window').height;
 
-const EditPageContainer = styled.View`
+const EditPageContainer = styled.SafeAreaView`
   flex: 1;
-  height: ${windowHeight};
+  background-color: white;
 `;
 
 const EditPageTitle = styled.Text`
   font-size: 36px;
-  font-weight: 600;
+  font-weight: 700;
+  line-height: 40px;
+  margin: 20px 16px;
 `;
 
 const EditForm = styled.View``;
@@ -218,15 +220,7 @@ const PillInfoTitle = styled.Text`
 const CustomButtonWrapper = styled.View`
   width: 100%;
   flex-direction: row;
-`;
-
-const CustomButton = styled.TouchableOpacity`
-  background-color: ${(props) =>
-    props.disabled ? COLORS.POINT_COLOR_20 : COLORS.POINT_COLOR_100};
-  flex: 1;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 16px;
+  margin: -8px 16px 0px;
 `;
 
 const Backdrop = styled.View`
