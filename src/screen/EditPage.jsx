@@ -121,7 +121,7 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
             {isEdit ? (
               <CustomButton
                 onPress={handleEditPill}
-                disabled={!pillName && eachTimeObject}
+                disabled={!pillName && !edited}
                 buttonText="수정"
               />
             ) : (
