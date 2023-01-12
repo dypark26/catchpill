@@ -6,7 +6,10 @@ const Stack = createNativeStackNavigator();
 
 const Stacks = () => {
   return (
-    <Stack.Navigator initialRouteName="로그인">
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="로그인"
+    >
       <Stack.Screen name="회원가입" component={SignupPage} />
       <Stack.Screen name="로그인" component={LoginPage} />
       <Stack.Screen name="수정 페이지" component={EditPage} />
