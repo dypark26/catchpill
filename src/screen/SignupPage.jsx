@@ -6,6 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { COLORS } from '../shared/color';
 import { ThemeContext } from '../context/Theme';
 import { PageContainer } from '../components/index';
+import { CustomButton, CustomInput } from '../components/index';
 
 const regex = {
   email: new RegExp(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/),
@@ -71,15 +72,15 @@ const SignupPage = ({ navigation: { navigate } }) => {
           />
         </BackToLoginPageButton>
         <InputContainer>
-          <LabelText theme={theme}>아이디</LabelText>
           <CustomInput
+            title="아이디"
+            theme={theme}
             type="text"
             keyboardType="email-address"
             placeholder="아이디를 입력해주세요!"
             value={email}
             onChangeText={setEmail}
             onChange={(text) => validEmail(text)}
-            style={styles1.textInputShadow}
           />
 
           {correctEmail || (
@@ -92,8 +93,9 @@ const SignupPage = ({ navigation: { navigate } }) => {
         </InputContainer>
 
         <InputContainer>
-          <LabelText theme={theme}>비밀번호</LabelText>
           <CustomInput
+            title="비밀번호"
+            theme={theme}
             type="password"
             keyBoardType="default"
             placeholder="비밀번호를 입력해주세요!"
@@ -101,7 +103,6 @@ const SignupPage = ({ navigation: { navigate } }) => {
             onChangeText={setPassword}
             onChange={(text) => validPassword(text)}
             secureTextEntry={visiblePassword}
-            style={styles1.textInputShadow}
           />
           <PasswordShowButton
             onPress={() => setVisiblePassword(!visiblePassword)}
@@ -109,7 +110,7 @@ const SignupPage = ({ navigation: { navigate } }) => {
             <FontAwesome
               name={visiblePassword ? 'eye' : 'eye-slash'}
               size={25}
-              color="gray"
+              color={theme === 'light' ? '#d5d5d5' : '#636568'}
             />
           </PasswordShowButton>
         </InputContainer>
@@ -120,34 +121,27 @@ const SignupPage = ({ navigation: { navigate } }) => {
               : '비밀번호는 6자리 이상, 14자리 이하의 영어 대, 소문자, 1개 이상의 숫자와 특수문자(!@#$%^&*) 조합이어야 합니다.'}
           </ErrorText>
         )}
-        <CustomButton onPress={() => onClickSignUpButton(email, password)}>
-          <CustomButtonText>회원가입</CustomButtonText>
-        </CustomButton>
+        <CustomButton
+          title="Login"
+          buttonText="회원가입"
+          onPress={() => onClickSignUpButton(email, password)}
+        ></CustomButton>
       </FormContainer>
     </PageContainer>
   );
 };
 
 const FormContainer = styled.View`
-  padding: 10px;
   height: 100%;
   background-color: ${(props) => (props.theme === 'light' ? 'white' : 'black')};
+  margin: 0px 16px 0px;
 `;
 
 const BackToLoginPageButton = styled.TouchableOpacity`
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 `;
 
-const InputContainer = styled.View`
-  position: relative;
-`;
-
-const LabelText = styled.Text`
-  font-size: 28px;
-  font-weight: 400;
-  margin: 16px 0 10px 0;
-  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
-`;
+const InputContainer = styled.View``;
 
 const ErrorText = styled.Text`
   color: ${COLORS.DANGER};
@@ -156,60 +150,8 @@ const ErrorText = styled.Text`
 
 const PasswordShowButton = styled.Text`
   position: absolute;
-  top: 65%;
-  right: 5%;
+  top: 60%;
+  right: 20px;
 `;
-
-// 이후 교체 예정
-const CustomButtonText = styled.Text`
-  font-weight: 400;
-  font-size: 28px;
-  line-height: 40px;
-  text-align: center;
-  width: 100%;
-`;
-
-const CustomInput = styled.TextInput`
-  padding: 12px 16px;
-  border-radius: 16px;
-  background-color: white;
-`;
-
-const CustomButton = styled.TouchableOpacity`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  gap: 148px;
-  margin-top: 48px;
-  width: 100%;
-  height: 80px;
-  background: #0feec6;
-  border-radius: 16px;
-`;
-
-const styles1 = StyleSheet.create({
-  textInputShadow: {
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-      },
-      android: {
-        backgroundColor: 'white',
-        elevation: 5,
-      },
-    }),
-  },
-});
-
-//
 
 export default SignupPage;

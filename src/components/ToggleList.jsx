@@ -25,8 +25,12 @@ const ToggleList = ({ pillName, time, id, isTaken, uid }) => {
       }
     >
       <ToggleListItemTextContainer>
-        <ToggleListItemTitle theme={theme}>{pillName}</ToggleListItemTitle>
-        <ToggleListItemTime theme={theme}>{mainPageTime}</ToggleListItemTime>
+        <ToggleListItemTitle theme={theme} isTaken={isTaken}>
+          {pillName}
+        </ToggleListItemTitle>
+        <ToggleListItemTime theme={theme} isTaken={isTaken}>
+          {mainPageTime}
+        </ToggleListItemTime>
       </ToggleListItemTextContainer>
       <ToggleButton id={id} togglePayload={togglePayload} />
     </BoxShadow>
@@ -41,14 +45,16 @@ const ToggleListItemTextContainer = styled.View`
 const ToggleListItemTitle = styled.Text`
   font-size: 28px;
   text-overflow: ellipsis;
-  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
+  color: ${(props) =>
+    props.isTaken ? '#343639' : props.theme === 'light' ? 'black' : 'white'};
 `;
 
 const ToggleListItemTime = styled.Text`
   font-size: 16px;
   margin: 0 0 0 16px;
   text-overflow: ellipsis;
-  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
+  color: ${(props) =>
+    props.isTaken ? '#343639' : props.theme === 'light' ? 'black' : 'white'};
 `;
 
 export default ToggleList;

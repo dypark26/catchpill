@@ -131,9 +131,15 @@ const GraphicStatus = () => {
           </SupportTextContainer>
         </Supports>
         <LeftPill style={{ ...styles.circleShadow, backgroundColor: color }}>
-          <LeftpillText1 theme={theme}>남은 약:</LeftpillText1>
-          <LeftpillText2 theme={theme}>{leftPillNum}</LeftpillText2>
-          <LeftpillText3 theme={theme}>/{totalPillNum}</LeftpillText3>
+          <LeftPillText1 theme={theme} opacity={opacity}>
+            남은 약:
+          </LeftPillText1>
+          <LeftPillText2 theme={theme} opacity={opacity}>
+            {leftPillNum}
+          </LeftPillText2>
+          <LeftPillText3 theme={theme} opacity={opacity}>
+            /{totalPillNum}
+          </LeftPillText3>
         </LeftPill>
       </GraphicContainer>
     );
@@ -164,13 +170,13 @@ const SupportTextContainer = styled.View`
   background-color: ${(props) =>
     props.theme === 'light' ? '#f3f3f3;' : '#343639'};
   border-radius: 22px;
-  font-size: 20px;
   overflow: hidden;
 `;
 
 const SupportText = styled.Text`
   text-align: center;
-  color: ${(props) => (props.theme === 'light' ? 'black' : 'white ')};
+  font-size: 20px;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 
 const TakenPill = styled.Text`
@@ -185,27 +191,30 @@ const LeftPill = styled.View`
   position: relative;
 `;
 
-const LeftpillText1 = styled.Text`
+const LeftPillText1 = styled.Text`
   font-size: 20px;
   font-weight: 400;
   text-align: center;
   top: 10%;
-  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
+  color: ${(props) =>
+    props.theme === 'dark' && props.opacity == 0 ? 'white' : 'black '};
 `;
-const LeftpillText2 = styled.Text`
+const LeftPillText2 = styled.Text`
   font-size: 80px;
   font-weight: 600;
   top: 15%;
   text-align: center;
-  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
+  color: ${(props) =>
+    props.theme === 'dark' && props.opacity == 0 ? 'white' : 'black '};
 `;
-const LeftpillText3 = styled.Text`
+const LeftPillText3 = styled.Text`
   font-size: 50px;
   font-weight: 300;
   position: absolute;
   bottom: 0;
   right: -15%;
-  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
+  color: ${(props) =>
+    props.theme === 'dark' && props.opacity == 0 ? 'white' : 'black '};
 `;
 
 const styles = StyleSheet.create({

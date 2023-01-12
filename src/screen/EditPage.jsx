@@ -195,11 +195,13 @@ const EditForm = styled.View``;
 const PillNameInput = styled.TextInput`
   font-size: 28px;
   flex-direction: row;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 
 const TimePicker = styled.Text`
   font-size: 28px;
   flex-direction: row;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 
 const PillInfoContainer = styled.View`
@@ -212,6 +214,7 @@ const PillInfoContainer = styled.View`
 const PillInfoTitle = styled.Text`
   font-size: 28px;
   text-overflow: ellipsis;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 
 const CustomButtonWrapper = styled.View`

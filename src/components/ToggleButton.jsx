@@ -12,9 +12,10 @@ const ToggleButton = ({ id, togglePayload }) => {
   return (
     <ToggleButtonContainer
       isTaken={isTaken}
+      theme={theme}
       onPress={() => toggleTaken({ id, togglePayload })}
     >
-      <ToggleButtonText theme={theme}>
+      <ToggleButtonText theme={theme} isTaken={isTaken}>
         {isTaken ? '취소' : '먹었어요!'}
       </ToggleButtonText>
     </ToggleButtonContainer>
@@ -24,7 +25,7 @@ const ToggleButton = ({ id, togglePayload }) => {
 const ToggleButtonContainer = styled.TouchableOpacity`
   width: 96px;
   height: 56px;
-  border: 1px solid white;
+  border: 1px solid ${(props) => (props.theme === 'light' ? 'white' : 'black')};
   background-color: ${COLORS.POINT_COLOR_100};
   border-radius: 8px;
   justify-content: center;
@@ -34,7 +35,7 @@ const ToggleButtonContainer = styled.TouchableOpacity`
 const ToggleButtonText = styled.Text`
   font-size: 20px;
   line-height: 24px;
-  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
+  color: #343639;
 `;
 
 export default ToggleButton;

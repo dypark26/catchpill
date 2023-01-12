@@ -37,7 +37,7 @@ const ManageList = ({ id, pillName, time, navigate }) => {
       <ButtonGroupContainer>
         <TextButton
           // 클릭하면 페이지 이동
-          buttonColor={COLORS.BLACK}
+          buttonColor={theme === 'light' ? COLORS.BLACK : 'white'}
           buttonText="편집"
           onPress={() =>
             navigate('Stacks', {
