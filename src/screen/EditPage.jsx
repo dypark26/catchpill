@@ -107,7 +107,7 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
 
         {/* 약 복용시간 타임피커 */}
         <TouchableOpacity onPress={handleOpenModal}>
-          <BoxShadow color="white">
+          <BoxShadow color={theme === 'light' ? 'white' : '#343639'}>
             <PillInfoTitle>복용 시간 :</PillInfoTitle>
             {isEdit ? (
               <TimePicker>{localEditTime}</TimePicker>
