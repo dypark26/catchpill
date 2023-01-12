@@ -3,10 +3,13 @@ import { COLORS } from '../shared/color';
 import { View, Alert, StyleSheet } from 'react-native';
 import { useDeletePillData } from '../Hooks/usePill';
 import TextButton from './TextButton';
+import { useContext } from 'react';
+import { ThemeContext } from '../context/Theme';
 
 // TODO: MyPage에 있는 약 목록을 삭제하는 기능을 구현합니다.
 const ManageList = ({ id, pillName, time, navigate }) => {
   const { mutate: deletePill } = useDeletePillData();
+  const { theme } = useContext(ThemeContext);
 
   const handleDeletePill = (id) => {
     Alert.alert(
@@ -29,12 +32,12 @@ const ManageList = ({ id, pillName, time, navigate }) => {
 
   return (
     <View style={styles.list}>
-      <ManageListContainer style={styles.list}>
-        <ManageListTitle>{pillName}</ManageListTitle>
+      <ManageListContainer theme={theme} style={styles.list}>
+        <ManageListTitle theme={theme}>{pillName}</ManageListTitle>
         <ButtonGroupContainer>
           <TextButton
             // 클릭하면 페이지 이동
-            buttonColor={COLORS.BLACK}
+            buttonColor={theme === 'light' ? COLORS.BLACK : 'white'}
             buttonText="편집"
             onPress={() =>
               navigate('Stacks', {
@@ -70,11 +73,14 @@ const ManageListContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  background-color: ${(props) =>
+    props.theme === 'light' ? 'white' : '#343639'};
 `;
 
 const ManageListTitle = styled.Text`
   font-size: 28px;
   text-overflow: ellipsis;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 
 const ButtonGroupContainer = styled.View`
