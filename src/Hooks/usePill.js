@@ -81,7 +81,9 @@ export const useGetPillData = (uid) => {
     refetchOnWindowFocus: true,
     // TODO: 실시간 업데이트 반영 옵션 활성화하기
     select: (data) => {
-      return data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const dataArr = [];
+      data.docs.forEach((doc) => dataArr.push({ ...doc.data(), id: doc.id }));
+      return dataArr;
     },
     refetchOnMount: true,
   });
@@ -112,22 +114,23 @@ export const useToggleTakenPill = () => {
       const previousPillList = queryClient.getQueryData(['pill-list']);
 
       // 새롭게 변형된 데이터로 설정합니다.
-      queryClient.setQueriesData(['pill-list'], (old) => {
+      queryClient.setQueryData(['pill-list'], (old) => {
+        const dataArr = [];
         // useGetPillData에서 데이터를 선택하는 것과 유사한 파이어베이한 로직 문제입니다
-        old.docs.map((doc) => {
-          return doc.id === togglePill.id
+        old.docs.forEach((doc) => {
+          doc.id === togglePill.id
             ? // 복용하면서 isTaken을 false에서 true로 변경합니다. 반대도 동작합니다.
-              {
+              dataArr.push({
                 ...doc.data(),
                 id: doc.id,
-                isTaken: togglePill.togglePayload.isTaken,
-              }
+                isTaken: !togglePill.togglePayload.isTaken,
+              })
             : // 안 건드린 약입니다.
-              { ...doc.data(), id: doc.id };
+              dataArr.push({ ...doc.data(), id: doc.id });
         });
 
         // 파이어베이스로 선택한 데이터를 반환합니다.
-        return old;
+        return dataArr;
       });
 
       // 저장한 값을 먼저 반환합니다.
@@ -205,5 +208,36 @@ const deletePill = (pill) => {
 
 // 약 삭제 함수
 export const useDeletePillData = () => {
-  return useMutation(deletePill);
+  const queryClient = useQueryClient();
+  return useMutation(deletePill, {
+    onMutate: async (deletedPill) => {
+      // 쿼리를 취소합니다.
+      await queryClient.cancelQueries(['pill-list']);
+
+      // 기본 데이터를 저장합니다.
+      const previousPillList = queryClient.getQueryData(['pill-list']);
+
+      // 새롭게 변형된 데이터로 설정합니다.
+      queryClient.setQueryData(['pill-list'], (old) => {
+        const data = [];
+        old.docs.forEach((doc) => data.push({ ...doc.data(), id: doc.id }));
+        console.log(data, deletedPill);
+
+        return data.filter((doc) => doc.id !== deletedPill);
+      });
+
+      return { previousPillList };
+    },
+    onSuccess: () => {
+      // console.log('성공');
+    },
+    onError: () => {
+      // console.log('실패');
+      queryClient.setQueryData(['pill-list'], context.previousPillList);
+    },
+    onSettled: () => {
+      // 통신 후 서버에 반영합니다.
+      queryClient.invalidateQueries(['pill-list']);
+    },
+  });
 };

@@ -1,65 +1,75 @@
-import { TouchableOpacity, View, Text, TextInput } from 'react-native';
-import { useState, useRef } from 'react';
+import { SafeAreaView, Text, TextInput } from 'react-native';
+import styled from '@emotion/native';
+import { useState } from 'react';
 import { auth } from '../shared/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useSignIn } from '../Hooks/useLogin';
+import CustomButton from '../components/CustomButton';
+import CustomInput from '../components/CustomInput';
 
 const LoginPage = ({ navigation: { navigate } }) => {
-  const checkPW = useRef(null);
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
 
-  const handleLogin = () => {
+  const { mutate: SignIn } = useSignIn();
+
+  //이메일이나 비밀번호가 빈칸이면 alert출력
+  const handleLogin = (email, password) => {
     if (!email) {
       alert('email을 입력해주세요.');
-      email.current.focus();
       return true;
-    }
-    if (!pw) {
+    } else if (!pw) {
       alert('password를 입력해주세요.');
-      pw.current.focus();
       return true;
+    } else {
+      setEmail('');
+      setPw('');
+      navigate('Tabs', { screen: '메인 페이지' });
+      SignIn({ email, password });
     }
-
-    // 로그인 요청
-    signInWithEmailAndPassword(auth, email, pw)
-      .then(() => {
-        setEmail('');
-        setPw('');
-        navigate('Tabs', { screen: '메인 페이지' });
-      })
-      .catch((err) => {
-        if (err.message.includes('user-not-found')) {
-          alert('회원이 아닙니다. 회원가입을 먼저 진행해 주세요.');
-        }
-        if (err.message.includes('wrong-password')) {
-          alert('비밀번호가 틀렸습니다.');
-        }
-      });
   };
   return (
-    <View>
-      <TextInput
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-        textContentType="emailAddress"
-        placeholder="아이디를 입력하세요"
-      />
-      <TextInput
-        ref={checkPW}
-        value={pw}
-        onChangeText={(text) => setPw(text)}
-        textContentType="password"
-        returnKeyType="send"
-        placeholder="비밀번호를 입력하세요"
-      />
-      <TouchableOpacity onPress={() => handleLogin()}>
-        <Text>로그인</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigate('회원가입')}>
-        <Text>회원가입</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <LoginContainer>
+        {/* 이메일 인풋 */}
+        <CustomInput
+          keyboardType="email-address"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+          textContentType="emailAddress"
+          placeholder="이메일을 입력하세요"
+          title="아이디"
+        />
+        {/* 비밀번호 인풋 */}
+        <CustomInput
+          value={pw}
+          onChangeText={(text) => setPw(text)}
+          secureTextEntry={true}
+          returnKeyType="send"
+          placeholder="비밀번호를 입력하세요"
+          title="비밀번호"
+        />
+
+        {/* 로그인 버튼 */}
+        <CustomButton
+          title="Login"
+          onPress={() => handleLogin(email, pw)}
+          buttonText="로그인"
+        />
+        {/* 회원가입 버튼 */}
+        <CustomButton
+          title="Login"
+          onPress={() => navigate('회원가입')}
+          buttonText="회원가입"
+        />
+      </LoginContainer>
+    </SafeAreaView>
   );
 };
 
 export default LoginPage;
+
+const LoginContainer = styled.View`
+  padding-left: 20px;
+  flex: 1;
+  background-color: #fff;
+`;
