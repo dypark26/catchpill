@@ -41,7 +41,7 @@ const CustomInputStyle = styled.TextInput`
   border-color: ${COLORS.CANCEL};
   height: 80px;
   padding: 10px 20px;
-  border-radius: 10px;
+  border-radius: 16px;
   font-size: 20px;
   background-color: white;
 `;
