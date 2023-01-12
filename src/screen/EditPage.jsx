@@ -1,20 +1,18 @@
 import {
+  View,
   Text,
   Modal,
   Button,
   Dimensions,
   TouchableOpacity,
-  StyleSheet,
 } from 'react-native';
 import { useState } from 'react';
 import styled from '@emotion/native';
 import { useAddPillData, useEditPillData } from '../Hooks/usePill';
-import { COLORS } from '../shared/color';
 import { useUID } from '../Hooks/useAuth';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { strToObjTime, translateTime } from '../utils/transTime';
-import { CustomButton } from '../components';
-import { PageContainer } from '../components/index';
+import { CustomButton, BoxShadow, PageContainer } from '../components';
 
 const EditPage = ({ navigation: { navigate }, route: { params } }) => {
   // '편집'에서 EditPage 들어오면
@@ -94,7 +92,7 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
       {/* 수정 폼 */}
       <EditForm>
         {/* 약 이름 인풋 */}
-        <PillInfoContainer>
+        <BoxShadow>
           <PillInfoTitle>약 이름 :</PillInfoTitle>
           <PillNameInput
             defaultValue={eachPillName}
@@ -102,17 +100,18 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
             value={pillName}
             onChangeText={setPillName}
           />
-        </PillInfoContainer>
+        </BoxShadow>
+
         {/* 약 복용시간 타임피커 */}
         <TouchableOpacity onPress={handleOpenModal}>
-          <PillInfoContainer>
+          <BoxShadow>
             <PillInfoTitle>복용 시간 :</PillInfoTitle>
             {isEdit ? (
               <TimePicker>{localEditTime}</TimePicker>
             ) : (
               <TimePicker>{localTime}</TimePicker>
             )}
-          </PillInfoContainer>
+          </BoxShadow>
         </TouchableOpacity>
         {/* 에디트 폼 버튼 래퍼 */}
         <CustomButtonWrapper>
@@ -200,12 +199,7 @@ const TimePicker = styled.Text`
 `;
 
 const PillInfoContainer = styled.View`
-  background-color: white;
-  margin: 8px 16px;
-  padding: 12px 16px;
-  height: 80px;
-  border-radius: 16px;
-  box-shadow: 0px 0px 8px rgba(202, 202, 202, 0.23);
+  flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
