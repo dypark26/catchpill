@@ -3,7 +3,6 @@ import { Dimensions } from 'react-native';
 import { COLORS } from '../shared/color';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-
 //로그인 인풋 title로 제목 기재
 const CustomInput = ({
   value,
@@ -16,10 +15,11 @@ const CustomInput = ({
   keyboardType,
   style,
   title,
+  theme,
 }) => {
   return (
     <>
-      <CustomInputTitle>{title}</CustomInputTitle>
+      <CustonInputTitle theme={theme}>{title}</CustonInputTitle>
       <CustomInputStyle
         type={type}
         keyboardType={keyboardType}
@@ -46,7 +46,8 @@ const CustomInputStyle = styled.TextInput`
   background-color: white;
 `;
 //로그인타이틀CSS
-const CustomInputTitle = styled.Text`
+const CustonInputTitle = styled.Text`
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
   font-size: 28px;
   margin: 16px 0 10px 0;
 `;

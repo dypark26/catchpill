@@ -12,13 +12,11 @@ const MyPage = ({ navigation: { navigate } }) => {
   if (isError) {
     return (
       <SafeAreaView style={styles.screenArea}>
-        <MyPageContainer>
-          <PageTitle>나의 약관리</PageTitle>
-          <View>
-            <Text>에러</Text>
-            <Text>{error.message}</Text>
-          </View>
-        </MyPageContainer>
+        <PageTitle>나의 약관리</PageTitle>
+        <View>
+          <Text>에러</Text>
+          <Text>{error.message}</Text>
+        </View>
       </SafeAreaView>
     );
   }
@@ -27,12 +25,10 @@ const MyPage = ({ navigation: { navigate } }) => {
   if (isLoading) {
     return (
       <SafeAreaView style={styles.screenArea}>
-        <MyPageContainer>
-          <PageTitle>나의 약관리</PageTitle>
-          <View>
-            <Text>Loading...</Text>
-          </View>
-        </MyPageContainer>
+        <PageTitle>나의 약관리</PageTitle>
+        <View>
+          <Text>Loading...</Text>
+        </View>
       </SafeAreaView>
     );
   }
@@ -42,6 +38,7 @@ const MyPage = ({ navigation: { navigate } }) => {
       <PageTitle>나의 약관리</PageTitle>
       <FlatList
         data={pillList}
+        ListHeaderComponent={<PageTitle>나의 약관리</PageTitle>}
         keyExtractor={(item) => item.id}
         renderItem={({ item: { id, pillName, time } }) => (
           <ManageList

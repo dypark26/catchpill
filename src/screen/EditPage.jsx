@@ -108,7 +108,6 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
           <TouchableOpacity onPress={handleOpenModal}>
             <PillInfoContainer>
               <PillInfoTitle>복용 시간 :</PillInfoTitle>
-              {/* <TimePicker>{time.toLocaleString()}</TimePicker> */}
               {isEdit ? (
                 <TimePicker>{localEditTime}</TimePicker>
               ) : (

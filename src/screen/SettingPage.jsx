@@ -1,15 +1,14 @@
-import { TextButton } from '../components';
+import { CustomButton } from '../components';
 import { View, SafeAreaView, StyleSheet } from 'react-native';
 
 const SettingPage = ({ navigation: { navigate } }) => {
   return (
     <SafeAreaView style={styles.screenArea}>
-      <TextButton
-        buttonColor="aqua"
+      <CustomButton
         buttonText="로그아웃"
         onPress={() => navigate('Stacks', { screen: '로그인' })}
       />
-      <TextButton buttonColor="aqua" buttonText="다크 모드" />
+      <CustomButton buttonText="다크 모드" />
     </SafeAreaView>
   );
 };
