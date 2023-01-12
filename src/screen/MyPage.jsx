@@ -81,7 +81,7 @@ const PageTitle = styled.Text`
 const CustomButtonContainer = styled.View`
   width: 100%;
   align-items: center;
-  margin: -8px 0 16px;
+  margin: -8px 8px 0px;
 `;
 
 const styles = StyleSheet.create({
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         flex: 1,
+        backgroundColor: white,
       },
       android: {
         flex: 1,
