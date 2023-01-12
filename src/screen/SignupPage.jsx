@@ -61,13 +61,13 @@ const SignupPage = ({ navigation: { navigate } }) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.screenArea}>
       <FormContainer theme={theme}>
         <BackToLoginPageButton onPress={() => navigate('로그인')}>
           <FontAwesome
             name="chevron-left"
             size={23}
-            color={theme === 'light' ? 'white' : 'black'}
+            color={theme === 'light' ? 'black' : 'white'}
           />
         </BackToLoginPageButton>
         <ToggleModeButton />
@@ -206,6 +206,13 @@ const styles = StyleSheet.create({
       android: {
         backgroundColor: 'white',
         elevation: 5,
+      },
+    }),
+  },
+  screenArea: {
+    ...Platform.select({
+      android: {
+        paddingTop: 20,
       },
     }),
   },

@@ -1,5 +1,5 @@
 import styled from '@emotion/native';
-import { Text, View, FlatList } from 'react-native';
+import { Text, View, FlatList, StyleSheet, SafeAreaView } from 'react-native';
 import { ManageList, CustomButton } from '../components';
 import { useUID } from '../Hooks/useAuth';
 import { useGetPillData } from '../Hooks/usePill';
@@ -11,30 +11,34 @@ const MyPage = ({ navigation: { navigate } }) => {
   // 에러 핸들링: 통신 실패의 경우 보여주는 화면입니다.
   if (isError) {
     return (
-      <MyPageContainer>
-        <PageTitle>나의 약관리</PageTitle>
-        <View>
-          <Text>에러</Text>
-          <Text>{error.message}</Text>
-        </View>
-      </MyPageContainer>
+      <SafeAreaView style={styles.screenArea}>
+        <MyPageContainer>
+          <PageTitle>나의 약관리</PageTitle>
+          <View>
+            <Text>에러</Text>
+            <Text>{error.message}</Text>
+          </View>
+        </MyPageContainer>
+      </SafeAreaView>
     );
   }
 
   // 통신 중
   if (isLoading) {
     return (
-      <MyPageContainer>
-        <PageTitle>나의 약관리</PageTitle>
-        <View>
-          <Text>Loading...</Text>
-        </View>
-      </MyPageContainer>
+      <SafeAreaView style={styles.screenArea}>
+        <MyPageContainer>
+          <PageTitle>나의 약관리</PageTitle>
+          <View>
+            <Text>Loading...</Text>
+          </View>
+        </MyPageContainer>
+      </SafeAreaView>
     );
   }
 
   return (
-    <MyPageContainer>
+    <SafeAreaView style={styles.screenArea}>
       <PageTitle>나의 약관리</PageTitle>
       <FlatList
         data={pillList}
@@ -66,13 +70,9 @@ const MyPage = ({ navigation: { navigate } }) => {
           </CustomButtonContainer>
         }
       />
-    </MyPageContainer>
+    </SafeAreaView>
   );
 };
-
-const MyPageContainer = styled.SafeAreaView`
-  flex: 1;
-`;
 
 const PageTitle = styled.Text`
   font-size: 36px;
@@ -86,5 +86,19 @@ const CustomButtonContainer = styled.View`
   align-items: center;
   margin: -8px 0 16px;
 `;
+
+const styles = StyleSheet.create({
+  screenArea: {
+    ...Platform.select({
+      ios: {
+        flex: 1,
+      },
+      android: {
+        flex: 1,
+        paddingTop: 20,
+      },
+    }),
+  },
+});
 
 export default MyPage;

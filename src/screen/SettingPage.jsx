@@ -1,13 +1,27 @@
 import { TextButton } from '../components';
-import { View } from 'react-native';
+import { View, SafeAreaView, StyleSheet } from 'react-native';
 
-const SettingPage = () => {
+const SettingPage = ({ navigation: { navigate } }) => {
   return (
-    <View>
-      <TextButton buttonColor="aqua" buttonText="로그아웃" />
+    <SafeAreaView style={styles.screenArea}>
+      <TextButton
+        buttonColor="aqua"
+        buttonText="로그아웃"
+        onPress={() => navigate('Stacks', { screen: '로그인' })}
+      />
       <TextButton buttonColor="aqua" buttonText="다크 모드" />
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default SettingPage;
+
+const styles = StyleSheet.create({
+  screenArea: {
+    ...Platform.select({
+      android: {
+        paddingTop: 30,
+      },
+    }),
+  },
+});

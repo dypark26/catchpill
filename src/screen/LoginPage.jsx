@@ -1,4 +1,4 @@
-import { SafeAreaView, Text, TextInput } from 'react-native';
+import { SafeAreaView, Text, TextInput, StyleSheet } from 'react-native';
 import styled from '@emotion/native';
 import { useState } from 'react';
 import { auth } from '../shared/firebase';
@@ -28,7 +28,7 @@ const LoginPage = ({ navigation: { navigate } }) => {
     }
   };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.screenArea}>
       <LoginContainer>
         {/* 이메일 인풋 */}
         <CustomInput
@@ -73,3 +73,17 @@ const LoginContainer = styled.View`
   flex: 1;
   background-color: #fff;
 `;
+
+const styles = StyleSheet.create({
+  screenArea: {
+    ...Platform.select({
+      ios: {
+        flex: 1,
+      },
+      android: {
+        flex: 1,
+        paddingTop: 20,
+      },
+    }),
+  },
+});

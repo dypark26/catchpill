@@ -1,11 +1,11 @@
 import { GraphicStatus } from '../components/index';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { Text, FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import { useUID } from '../Hooks/useAuth';
 import { useGetPillData } from '../Hooks/usePill';
 import { ToggleList } from '../components';
 import { useEffect, useState } from 'react';
 
-const MainPage = ({ navigation: { navigate } }) => {
+const MainPage = () => {
   const { data: uid } = useUID();
   const { isError, error, isLoading, data: pillList } = useGetPillData(uid);
 
@@ -23,23 +23,23 @@ const MainPage = ({ navigation: { navigate } }) => {
 
   if (isError) {
     return (
-      <View>
+      <SafeAreaView style={styles.screenArea}>
         <Text>에러 페이지</Text>
         <Text>{error.message}</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   if (isLoading || !initialLoad) {
     return (
-      <View>
+      <SafeAreaView style={styles.screenArea}>
         <Text>로딩 화면</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View>
+    <SafeAreaView style={styles.screenArea}>
       <FlatList
         data={pillList}
         keyExtractor={(item) => item.id}
@@ -54,8 +54,18 @@ const MainPage = ({ navigation: { navigate } }) => {
           />
         )}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default MainPage;
+
+const styles = StyleSheet.create({
+  screenArea: {
+    ...Platform.select({
+      android: {
+        paddingTop: 30,
+      },
+    }),
+  },
+});
