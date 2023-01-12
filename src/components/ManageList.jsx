@@ -1,6 +1,6 @@
 import styled from '@emotion/native';
 import { COLORS } from '../shared/color';
-import { Alert } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import { useDeletePillData } from '../Hooks/usePill';
 import TextButton from './TextButton';
 
@@ -28,7 +28,7 @@ const ManageList = ({ id, pillName, time, navigate }) => {
   };
 
   return (
-    <ManageListContainer>
+    <ManageListContainer style={styles.list}>
       <ManageListTitle>{pillName}</ManageListTitle>
       <ButtonGroupContainer>
         <TextButton
@@ -80,5 +80,23 @@ const ButtonGroupContainer = styled.View`
   justify-content: flex-end;
   gap: 16px;
 `;
+
+const styles = StyleSheet.create({
+  list: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.23,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
+});
 
 export default ManageList;
