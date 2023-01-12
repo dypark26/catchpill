@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { ThemeContext, ToggleModeButton } from '../context/Theme';
 import { CustomButton, PageContainer } from '../components/';
 import styled from '@emotion/native';
 
@@ -10,7 +12,11 @@ const SettingPage = ({ navigation: { navigate } }) => {
           buttonText="로그아웃"
           onPress={() => navigate('Stacks', { screen: '로그인' })}
         />
-        <CustomButton title="Login" buttonText="다크 모드" />
+        <ToggleModeButton
+          title="Login"
+          buttonColor="aqua"
+          buttonText="다크 모드"
+        />
       </CustomButtonWrapper>
     </PageContainer>
   );

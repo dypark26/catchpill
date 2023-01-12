@@ -4,10 +4,13 @@ import { ManageList, CustomButton } from '../components';
 import { useUID } from '../Hooks/useAuth';
 import { useGetPillData } from '../Hooks/usePill';
 import { PageContainer } from '../components/index';
+import { useContext } from 'react';
+import { ThemeContext } from '../context/Theme';
 
 const MyPage = ({ navigation: { navigate } }) => {
   const { data: uid } = useUID();
   const { isLoading, isError, error, data: pillList } = useGetPillData(uid);
+  const { theme } = useContext(ThemeContext);
 
   // 에러 핸들링: 통신 실패의 경우 보여주는 화면입니다.
   if (isError) {
@@ -38,7 +41,7 @@ const MyPage = ({ navigation: { navigate } }) => {
     <PageContainer>
       <FlatList
         data={pillList}
-        ListHeaderComponent={<PageTitle>나의 약관리</PageTitle>}
+        ListHeaderComponent={<PageTitle theme={theme}>나의 약관리</PageTitle>}
         keyExtractor={(item) => item.id}
         renderItem={({ item: { id, pillName, time } }) => (
           <ManageList
@@ -71,11 +74,18 @@ const MyPage = ({ navigation: { navigate } }) => {
   );
 };
 
+const MyPageContainer = styled.SafeAreaView`
+  flex: 1;
+  /* background-color: ${(props) =>
+    props.theme === 'light' ? 'white' : 'black'}; */
+`;
+
 const PageTitle = styled.Text`
   font-size: 36px;
   font-weight: 700;
   line-height: 40px;
   margin: 20px 16px;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 
 const CustomButtonContainer = styled.View`
