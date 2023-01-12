@@ -1,20 +1,18 @@
 import {
+  View,
   Text,
   Modal,
   Button,
   Dimensions,
   TouchableOpacity,
-  SafeAreaView,
-  StyleSheet,
 } from 'react-native';
 import { useContext, useState } from 'react';
 import styled from '@emotion/native';
 import { useAddPillData, useEditPillData } from '../Hooks/usePill';
-import { COLORS } from '../shared/color';
 import { useUID } from '../Hooks/useAuth';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { strToObjTime, translateTime } from '../utils/transTime';
-import { CustomButton } from '../components';
+import { CustomButton, BoxShadow, PageContainer } from '../components';
 import { ThemeContext } from '../context/Theme';
 
 const EditPage = ({ navigation: { navigate }, route: { params } }) => {
@@ -91,103 +89,91 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        screenArea: {
-          ...Platform.select({
-            android: {
-              paddingTop: 20,
-            },
-          }),
-        },
-      }}
-    >
-      <EditPageContainer theme={theme}>
-        {/* page 의 title */}
-        <EditPageTitle theme={theme}>나의 약 정보</EditPageTitle>
-        {/* 수정 폼 */}
-        <EditForm>
-          {/* 약 이름 인풋 */}
-          <PillInfoContainer>
-            <PillInfoTitle>약 이름 :</PillInfoTitle>
-            <PillNameInput
-              defaultValue={eachPillName}
-              placeholder="어떤 약인가요?"
-              value={pillName}
-              onChangeText={setPillName}
-            />
-          </PillInfoContainer>
-          {/* 약 복용시간 타임피커 */}
-          <TouchableOpacity onPress={handleOpenModal}>
-            <PillInfoContainer>
-              <PillInfoTitle>복용 시간 :</PillInfoTitle>
-              {isEdit ? (
-                <TimePicker>{localEditTime}</TimePicker>
-              ) : (
-                <TimePicker>{localTime}</TimePicker>
-              )}
-            </PillInfoContainer>
-          </TouchableOpacity>
-          {/* 에디트 폼 버튼 래퍼 */}
-          <CustomButtonWrapper>
-            {/* 약 추가/저장 버튼 */}
+    <PageContainer theme={theme}>
+      {/* page 의 title */}
+      <EditPageTitle theme={theme}>나의 약 정보</EditPageTitle>
+      {/* 수정 폼 */}
+      <EditForm>
+        {/* 약 이름 인풋 */}
+        <BoxShadow color={theme === 'light' ? 'white' : '#343639'}>
+          <PillInfoTitle>약 이름 :</PillInfoTitle>
+          <PillNameInput
+            defaultValue={eachPillName}
+            placeholder="어떤 약인가요?"
+            value={pillName}
+            onChangeText={setPillName}
+          />
+        </BoxShadow>
+
+        {/* 약 복용시간 타임피커 */}
+        <TouchableOpacity onPress={handleOpenModal}>
+          <BoxShadow color={theme === 'light' ? 'white' : '#343639'}>
+            <PillInfoTitle>복용 시간 :</PillInfoTitle>
             {isEdit ? (
-              <CustomButton
-                onPress={handleEditPill}
-                disabled={!pillName && !edited}
-                buttonText="수정"
+              <TimePicker>{localEditTime}</TimePicker>
+            ) : (
+              <TimePicker>{localTime}</TimePicker>
+            )}
+          </BoxShadow>
+        </TouchableOpacity>
+        {/* 에디트 폼 버튼 래퍼 */}
+        <CustomButtonWrapper>
+          {/* 약 추가/저장 버튼 */}
+          {isEdit ? (
+            <CustomButton
+              onPress={handleEditPill}
+              disabled={!pillName && !edited}
+              buttonText="수정"
+            />
+          ) : (
+            <CustomButton
+              onPress={handleAddPill}
+              disabled={!pillName || !time}
+              buttonText="저장"
+            />
+          )}
+          {/* 취소 / 돌아가기 버튼 */}
+          <CustomButton
+            title="delete"
+            onPress={() => navigate('Tabs', { screen: '마이 페이지' })}
+            buttonText="취소"
+          >
+            <Text>취소</Text>
+          </CustomButton>
+        </CustomButtonWrapper>
+      </EditForm>
+      <Modal visible={isOpenModal} transparent animationType="slide">
+        <Backdrop>
+          <ModalCard>
+            {isEdit ? (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={editTime}
+                mode={'time'}
+                is24Hour={true}
+                display="spinner"
+                onChange={onChangeEditTime}
               />
             ) : (
-              <CustomButton
-                onPress={handleAddPill}
-                disabled={!pillName || !time}
-                buttonText="저장"
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={time}
+                mode={'time'}
+                is24Hour={true}
+                display="spinner"
+                onChange={onChangeTime}
               />
             )}
-            {/* 취소 / 돌아가기 버튼 */}
-            <CustomButton
-              title="delete"
-              onPress={() => navigate('Tabs', { screen: '마이 페이지' })}
-              buttonText="취소"
-            >
-              <Text>취소</Text>
-            </CustomButton>
-          </CustomButtonWrapper>
-        </EditForm>
-        <Modal visible={isOpenModal} transparent animationType="slide">
-          <Backdrop>
-            <ModalCard>
-              {isEdit ? (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={editTime}
-                  mode={'time'}
-                  is24Hour={true}
-                  display="spinner"
-                  onChange={onChangeEditTime}
-                />
-              ) : (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={time}
-                  mode={'time'}
-                  is24Hour={true}
-                  display="spinner"
-                  onChange={onChangeTime}
-                />
-              )}
-              <Button
-                title="확인"
-                onPress={() => {
-                  setIsOpenModal(false);
-                }}
-              />
-            </ModalCard>
-          </Backdrop>
-        </Modal>
-      </EditPageContainer>
-    </SafeAreaView>
+            <Button
+              title="확인"
+              onPress={() => {
+                setIsOpenModal(false);
+              }}
+            />
+          </ModalCard>
+        </Backdrop>
+      </Modal>
+    </PageContainer>
   );
 };
 
@@ -195,11 +181,6 @@ export default EditPage;
 
 // 로컬 디바이스 화면크기 가져오기
 const windowHeight = Dimensions.get('window').height;
-
-const EditPageContainer = styled.SafeAreaView`
-  flex: 1;
-  background-color: ${(props) => (props.theme === 'light' ? 'white' : 'black')};
-`;
 
 const EditPageTitle = styled.Text`
   font-size: 36px;
@@ -214,20 +195,17 @@ const EditForm = styled.View``;
 const PillNameInput = styled.TextInput`
   font-size: 28px;
   flex-direction: row;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 
 const TimePicker = styled.Text`
   font-size: 28px;
   flex-direction: row;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 
 const PillInfoContainer = styled.View`
-  background-color: white;
-  margin: 8px 16px;
-  padding: 12px 16px;
-  height: 80px;
-  border-radius: 16px;
-  box-shadow: 0px 0px 8px rgba(202, 202, 202, 0.23);
+  flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -236,6 +214,7 @@ const PillInfoContainer = styled.View`
 const PillInfoTitle = styled.Text`
   font-size: 28px;
   text-overflow: ellipsis;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 
 const CustomButtonWrapper = styled.View`
@@ -259,5 +238,3 @@ const ModalCard = styled.KeyboardAvoidingView`
   box-shadow: 0px 0px 8px rgba(202, 202, 202, 0.23);
   background-color: white;
 `;
-
-const styles = StyleSheet.create({});

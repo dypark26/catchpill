@@ -3,6 +3,7 @@ import { COLORS } from '../shared/color';
 import { View, Alert, StyleSheet } from 'react-native';
 import { useDeletePillData } from '../Hooks/usePill';
 import TextButton from './TextButton';
+import { BoxShadow } from '../components';
 import { useContext } from 'react';
 import { ThemeContext } from '../context/Theme';
 
@@ -31,51 +32,35 @@ const ManageList = ({ id, pillName, time, navigate }) => {
   };
 
   return (
-    <View style={styles.list}>
-      <ManageListContainer theme={theme} style={styles.list}>
-        <ManageListTitle theme={theme}>{pillName}</ManageListTitle>
-        <ButtonGroupContainer>
-          <TextButton
-            // 클릭하면 페이지 이동
-            buttonColor={theme === 'light' ? COLORS.BLACK : 'white'}
-            buttonText="편집"
-            onPress={() =>
-              navigate('Stacks', {
-                screen: '수정 페이지',
-                params: {
-                  id: id,
-                  isEdit: true,
-                  eachPillName: pillName,
-                  eachTime: time,
-                },
-              })
-            }
-          />
-          <TextButton
-            // 클릭하면 alert()
-            buttonColor={COLORS.DANGER}
-            buttonText="삭제"
-            onPress={() => handleDeletePill(id)}
-          />
-        </ButtonGroupContainer>
-      </ManageListContainer>
-    </View>
+    <BoxShadow color={theme === 'light' ? 'white' : '#343639'}>
+      <ManageListTitle theme={theme}>{pillName}</ManageListTitle>
+      <ButtonGroupContainer>
+        <TextButton
+          // 클릭하면 페이지 이동
+          buttonColor={theme === 'light' ? COLORS.BLACK : 'white'}
+          buttonText="편집"
+          onPress={() =>
+            navigate('Stacks', {
+              screen: '수정 페이지',
+              params: {
+                id: id,
+                isEdit: true,
+                eachPillName: pillName,
+                eachTime: time,
+              },
+            })
+          }
+        />
+        <TextButton
+          // 클릭하면 alert()
+          buttonColor={COLORS.DANGER}
+          buttonText="삭제"
+          onPress={() => handleDeletePill(id)}
+        />
+      </ButtonGroupContainer>
+    </BoxShadow>
   );
 };
-
-const ManageListContainer = styled.View`
-  background-color: white;
-  margin: 8px 16px;
-  padding: 12px 16px;
-  height: 80px;
-  border-radius: 16px;
-  box-shadow: 0px 0px 8px rgba(202, 202, 202, 0.23);
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  background-color: ${(props) =>
-    props.theme === 'light' ? 'white' : '#343639'};
-`;
 
 const ManageListTitle = styled.Text`
   font-size: 28px;
@@ -88,24 +73,5 @@ const ButtonGroupContainer = styled.View`
   justify-content: flex-end;
   gap: 16px;
 `;
-
-const styles = StyleSheet.create({
-  list: {
-    ...Platform.select({
-      ios: {
-        shadowColor: '#d0d0d0',
-        shadowOffset: {
-          width: 0,
-          height: 3,
-        },
-        shadowOpacity: 0.29,
-        shadowRadius: 4.65,
-      },
-      android: {
-        elevation: 7,
-      },
-    }),
-  },
-});
 
 export default ManageList;

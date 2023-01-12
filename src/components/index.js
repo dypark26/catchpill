@@ -5,7 +5,7 @@ import ToggleList from './ToggleList';
 import CustomButton from './CustomButton';
 import CustomInput from './CustomInput';
 import PageContainer from './PageContainer';
-
+import BoxShadow from './BoxShadow';
 export {
   ManageList,
   TextButton,
@@ -14,4 +14,5 @@ export {
   CustomButton,
   CustomInput,
   PageContainer,
+  BoxShadow,
 };
