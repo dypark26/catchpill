@@ -4,7 +4,6 @@ import {
   Button,
   Dimensions,
   TouchableOpacity,
-  SafeAreaView,
   StyleSheet,
 } from 'react-native';
 import { useState } from 'react';
@@ -15,6 +14,7 @@ import { useUID } from '../Hooks/useAuth';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { strToObjTime, translateTime } from '../utils/transTime';
 import { CustomButton } from '../components';
+import { PageContainer } from '../components/index';
 
 const EditPage = ({ navigation: { navigate }, route: { params } }) => {
   // '편집'에서 EditPage 들어오면
@@ -88,92 +88,90 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
   };
 
   return (
-    <SafeAreaView style={styles.screenArea}>
-      <EditPageContainer>
-        {/* page 의 title */}
-        <EditPageTitle>나의 약 정보</EditPageTitle>
-        {/* 수정 폼 */}
-        <EditForm>
-          {/* 약 이름 인풋 */}
+    <PageContainer>
+      {/* page 의 title */}
+      <EditPageTitle>나의 약 정보</EditPageTitle>
+      {/* 수정 폼 */}
+      <EditForm>
+        {/* 약 이름 인풋 */}
+        <PillInfoContainer>
+          <PillInfoTitle>약 이름 :</PillInfoTitle>
+          <PillNameInput
+            defaultValue={eachPillName}
+            placeholder="어떤 약인가요?"
+            value={pillName}
+            onChangeText={setPillName}
+          />
+        </PillInfoContainer>
+        {/* 약 복용시간 타임피커 */}
+        <TouchableOpacity onPress={handleOpenModal}>
           <PillInfoContainer>
-            <PillInfoTitle>약 이름 :</PillInfoTitle>
-            <PillNameInput
-              defaultValue={eachPillName}
-              placeholder="어떤 약인가요?"
-              value={pillName}
-              onChangeText={setPillName}
-            />
-          </PillInfoContainer>
-          {/* 약 복용시간 타임피커 */}
-          <TouchableOpacity onPress={handleOpenModal}>
-            <PillInfoContainer>
-              <PillInfoTitle>복용 시간 :</PillInfoTitle>
-              {isEdit ? (
-                <TimePicker>{localEditTime}</TimePicker>
-              ) : (
-                <TimePicker>{localTime}</TimePicker>
-              )}
-            </PillInfoContainer>
-          </TouchableOpacity>
-          {/* 에디트 폼 버튼 래퍼 */}
-          <CustomButtonWrapper>
-            {/* 약 추가/저장 버튼 */}
+            <PillInfoTitle>복용 시간 :</PillInfoTitle>
             {isEdit ? (
-              <CustomButton
-                onPress={handleEditPill}
-                disabled={!pillName && !edited}
-                buttonText="수정"
+              <TimePicker>{localEditTime}</TimePicker>
+            ) : (
+              <TimePicker>{localTime}</TimePicker>
+            )}
+          </PillInfoContainer>
+        </TouchableOpacity>
+        {/* 에디트 폼 버튼 래퍼 */}
+        <CustomButtonWrapper>
+          {/* 약 추가/저장 버튼 */}
+          {isEdit ? (
+            <CustomButton
+              onPress={handleEditPill}
+              disabled={!pillName && !edited}
+              buttonText="수정"
+            />
+          ) : (
+            <CustomButton
+              onPress={handleAddPill}
+              disabled={!pillName || !time}
+              buttonText="저장"
+            />
+          )}
+          {/* 취소 / 돌아가기 버튼 */}
+          <CustomButton
+            title="delete"
+            onPress={() => navigate('Tabs', { screen: '마이 페이지' })}
+            buttonText="취소"
+          >
+            <Text>취소</Text>
+          </CustomButton>
+        </CustomButtonWrapper>
+      </EditForm>
+      <Modal visible={isOpenModal} transparent animationType="slide">
+        <Backdrop>
+          <ModalCard>
+            {isEdit ? (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={editTime}
+                mode={'time'}
+                is24Hour={true}
+                display="spinner"
+                onChange={onChangeEditTime}
               />
             ) : (
-              <CustomButton
-                onPress={handleAddPill}
-                disabled={!pillName || !time}
-                buttonText="저장"
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={time}
+                mode={'time'}
+                is24Hour={true}
+                display="spinner"
+                onChange={onChangeTime}
               />
             )}
-            {/* 취소 / 돌아가기 버튼 */}
-            <CustomButton
-              title="delete"
-              onPress={() => navigate('Tabs', { screen: '마이 페이지' })}
-              buttonText="취소"
-            >
-              <Text>취소</Text>
-            </CustomButton>
-          </CustomButtonWrapper>
-        </EditForm>
-        <Modal visible={isOpenModal} transparent animationType="slide">
-          <Backdrop>
-            <ModalCard>
-              {isEdit ? (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={editTime}
-                  mode={'time'}
-                  is24Hour={true}
-                  display="spinner"
-                  onChange={onChangeEditTime}
-                />
-              ) : (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={time}
-                  mode={'time'}
-                  is24Hour={true}
-                  display="spinner"
-                  onChange={onChangeTime}
-                />
-              )}
-              <Button
-                title="확인"
-                onPress={() => {
-                  setIsOpenModal(false);
-                }}
-              />
-            </ModalCard>
-          </Backdrop>
-        </Modal>
-      </EditPageContainer>
-    </SafeAreaView>
+            <Button
+              title="확인"
+              onPress={() => {
+                setIsOpenModal(false);
+              }}
+            />
+          </ModalCard>
+        </Backdrop>
+      </Modal>
+    </PageContainer>
   );
 };
 
@@ -181,11 +179,6 @@ export default EditPage;
 
 // 로컬 디바이스 화면크기 가져오기
 const windowHeight = Dimensions.get('window').height;
-
-const EditPageContainer = styled.SafeAreaView`
-  flex: 1;
-  background-color: white;
-`;
 
 const EditPageTitle = styled.Text`
   font-size: 36px;
@@ -244,13 +237,3 @@ const ModalCard = styled.KeyboardAvoidingView`
   box-shadow: 0px 0px 8px rgba(202, 202, 202, 0.23);
   background-color: white;
 `;
-
-const styles = StyleSheet.create({
-  screenArea: {
-    ...Platform.select({
-      android: {
-        paddingTop: 20,
-      },
-    }),
-  },
-});
