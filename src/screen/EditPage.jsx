@@ -11,7 +11,6 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
   // '새로운 약 추가하기'에서 EditPage 들어오면
   // isEdit = false / eachPillName = "" / eachTime = ""
   const { id, isEdit, eachPillName, eachTime } = params;
-  const { data: userId } = useUID();
 
   const [pillName, setPillName] = useState();
   const [time, setTime] = useState();
@@ -20,6 +19,9 @@ function EditPage({ navigation: { navigate }, route: { params } }) {
   const { mutate: addPill } = useAddPillData();
   // usePill 커스텀 훅에서 약 수정 함수 import
   const { mutate: editPill } = useEditPillData();
+
+  // 새로 추가될 약 정보
+  const { data: userId } = useUID();
 
   // 새로 추가될 약 정보
   const newPill = {
