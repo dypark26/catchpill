@@ -1,11 +1,10 @@
 import styled from '@emotion/native';
 import { useContext, useState } from 'react';
-import { Platform, SafeAreaView, StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { useSignup } from '../Hooks/useAuth';
 import { FontAwesome } from '@expo/vector-icons';
 import { COLORS } from '../shared/color';
 import { ThemeContext } from '../context/Theme';
-import { ToggleModeButton } from '../context/Theme';
 import { PageContainer } from '../components/index';
 
 const regex = {
@@ -71,7 +70,6 @@ const SignupPage = ({ navigation: { navigate } }) => {
             color={theme === 'light' ? 'black' : 'white'}
           />
         </BackToLoginPageButton>
-        <ToggleModeButton />
         <InputContainer>
           <LabelText theme={theme}>아이디</LabelText>
           <CustomInput

@@ -6,13 +6,14 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from '@emotion/native';
 import { useAddPillData, useEditPillData } from '../Hooks/usePill';
 import { useUID } from '../Hooks/useAuth';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { strToObjTime, translateTime } from '../utils/transTime';
 import { CustomButton, BoxShadow, PageContainer } from '../components';
+import { ThemeContext } from '../context/Theme';
 
 const EditPage = ({ navigation: { navigate }, route: { params } }) => {
   // '편집'에서 EditPage 들어오면
@@ -85,14 +86,16 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
     setEdited(true);
   };
 
+  const { theme } = useContext(ThemeContext);
+
   return (
-    <PageContainer>
+    <PageContainer theme={theme}>
       {/* page 의 title */}
-      <EditPageTitle>나의 약 정보</EditPageTitle>
+      <EditPageTitle theme={theme}>나의 약 정보</EditPageTitle>
       {/* 수정 폼 */}
       <EditForm>
         {/* 약 이름 인풋 */}
-        <BoxShadow color="white">
+        <BoxShadow color={theme === 'light' ? 'white' : '#343639'}>
           <PillInfoTitle>약 이름 :</PillInfoTitle>
           <PillNameInput
             defaultValue={eachPillName}
@@ -184,6 +187,7 @@ const EditPageTitle = styled.Text`
   font-weight: 700;
   line-height: 40px;
   margin: 20px 16px;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 
 const EditForm = styled.View``;

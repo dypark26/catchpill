@@ -54,7 +54,6 @@ export const useAddPillData = () => {
     // 성공이든 실패든 끝나면 항상 리패치합니다.
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['pill-list'] });
-      console.log('성공');
     },
   });
 };

@@ -3,11 +3,13 @@ import styled from '@emotion/native';
 import { COLORS } from '../shared/color';
 import { useUID } from '../Hooks/useAuth';
 import { useGetPillData } from '../Hooks/usePill';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import ConfettiCannon from 'react-native-confetti-cannon';
+import { ThemeContext } from '../context/Theme';
 
 const GraphicStatus = () => {
   const { data: uid } = useUID();
+  const { theme } = useContext(ThemeContext);
   const { isError, error, isLoading, data: pillList } = useGetPillData(uid);
 
   //응원글과 먹은 약 상태글 토글하기 위한 state
@@ -57,7 +59,7 @@ const GraphicStatus = () => {
     //0~1까지 비율에 따라 투명도 다르게 주기
     switch (true) {
       case opacity == 0:
-        color = 'white';
+        color = theme === 'light' ? 'white' : '#343639';
         break;
       case opacity > 0 && opacity <= 0.2:
         color = COLORS.POINT_COLOR_20;
@@ -89,7 +91,7 @@ const GraphicStatus = () => {
     let pop = Math.floor(Math.random() * supportArr.length);
 
     return (
-      <GraphicContainer>
+      <GraphicContainer theme={theme}>
         {opacity === 1 ? (
           <ConfettiCannon
             count={200}
@@ -103,16 +105,20 @@ const GraphicStatus = () => {
           </TouchableOpacity>
           <View style={{ display: message ? 'none' : 'flex' }}>
             {opacity === 0 ? (
-              <SupportTextContainer>
-                <SupportText>아직 하나도 먹지 않았어요!</SupportText>
+              <SupportTextContainer theme={theme}>
+                <SupportText theme={theme}>
+                  아직 하나도 먹지 않았어요!
+                </SupportText>
               </SupportTextContainer>
             ) : opacity === 1 ? (
               <SupportTextContainer>
-                <SupportText>축하합니다! 캐치필 달성!</SupportText>
+                <SupportText theme={theme}>
+                  축하합니다! 캐치필 달성!
+                </SupportText>
               </SupportTextContainer>
             ) : (
-              <SupportTextContainer>
-                <SupportText>
+              <SupportTextContainer theme={theme}>
+                <SupportText theme={theme}>
                   와! 벌써 <TakenPill>{isTakenNum}</TakenPill>개나 드셨네요!
                 </SupportText>
               </SupportTextContainer>
@@ -121,13 +127,13 @@ const GraphicStatus = () => {
 
           <SupportTextContainer style={{ display: message ? 'flex' : 'none' }}>
             {/* 랜덤으로 뽑아준 인덱스 이용해서 응원글 랜덤 뽑기 */}
-            <SupportText>{supportArr[pop]}</SupportText>
+            <SupportText theme={theme}>{supportArr[pop]}</SupportText>
           </SupportTextContainer>
         </Supports>
         <LeftPill style={{ ...styles.circleShadow, backgroundColor: color }}>
-          <LeftpillText1>남은 약:</LeftpillText1>
-          <LeftpillText2>{leftPillNum}</LeftpillText2>
-          <LeftpillText3>/{totalPillNum}</LeftpillText3>
+          <LeftpillText1 theme={theme}>남은 약:</LeftpillText1>
+          <LeftpillText2 theme={theme}>{leftPillNum}</LeftpillText2>
+          <LeftpillText3 theme={theme}>/{totalPillNum}</LeftpillText3>
         </LeftPill>
       </GraphicContainer>
     );
@@ -154,7 +160,9 @@ const SupportEmoji = styled.Text`
 const SupportTextContainer = styled.View`
   width: 280px;
   padding: 10px;
-  background-color: #f3f3f3;
+
+  background-color: ${(props) =>
+    props.theme === 'light' ? '#f3f3f3;' : '#343639'};
   border-radius: 22px;
   font-size: 20px;
   overflow: hidden;
@@ -162,6 +170,7 @@ const SupportTextContainer = styled.View`
 
 const SupportText = styled.Text`
   text-align: center;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white ')};
 `;
 
 const TakenPill = styled.Text`
@@ -181,12 +190,14 @@ const LeftpillText1 = styled.Text`
   font-weight: 400;
   text-align: center;
   top: 10%;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 const LeftpillText2 = styled.Text`
   font-size: 80px;
   font-weight: 600;
   top: 15%;
   text-align: center;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 const LeftpillText3 = styled.Text`
   font-size: 50px;
@@ -194,6 +205,7 @@ const LeftpillText3 = styled.Text`
   position: absolute;
   bottom: 0;
   right: -15%;
+  color: ${(props) => (props.theme === 'light' ? 'black' : 'white')};
 `;
 
 const styles = StyleSheet.create({

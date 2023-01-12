@@ -1,9 +1,7 @@
-import { SafeAreaView, Text, TextInput, StyleSheet } from 'react-native';
 import styled from '@emotion/native';
 import { useState, useContext } from 'react';
 import { COLORS } from '../shared/color';
 import { ThemeContext } from '../context/Theme';
-import { ToggleModeButton } from '../context/Theme';
 import { useSignIn } from '../Hooks/useAuth';
 import CustomButton from '../components/CustomButton';
 import CustomInput from '../components/CustomInput';
@@ -55,7 +53,6 @@ const LoginPage = ({ navigation: { navigate } }) => {
   return (
     <PageContainer>
       <LoginContainer theme={theme}>
-        <ToggleModeButton />
         {/* 이메일 인풋 */}
         <CustomInput
           keyboardType="email-address"
