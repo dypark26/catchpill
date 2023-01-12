@@ -7,6 +7,7 @@ const BoxShadow = ({ children, color }) => {
       style={{
         ...Platform.select({
           ios: {
+            justifyContent: 'center',
             height: 80,
             paddingHorizontal: 16,
             paddingVertical: 12,
@@ -24,10 +25,10 @@ const BoxShadow = ({ children, color }) => {
             shadowRadius: 4.65,
           },
           android: {
+            justifyContent: 'center',
             height: 80,
             paddingHorizontal: 16,
             paddingVertical: 12,
-
             marginHorizontal: 16,
             marginVertical: 8,
             borderRadius: 16,
