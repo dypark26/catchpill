@@ -29,6 +29,9 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
   const eachTimeObject = strToObjTime(eachTime);
   const [editTime, setEditTime] = useState(eachTimeObject);
 
+  // flag. 수정여부를 알려주는 state
+  const [edited, setEdited] = useState(false);
+
   // time, editTime 옵션 적용된 문자열 시간값으로 전환
   const localTime = translateTime(time);
   const localEditTime = translateTime(editTime);
@@ -67,11 +70,6 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
   };
 
   // 타임피커 로직
-
-  // 시간 표시 옵션
-  const options = { hour: 'numeric', minute: '2-digit' };
-  // const [editTime, setEditTime] = useState(eachTime);
-  // console.log('time', time);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleOpenModal = () => {
@@ -84,6 +82,7 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
 
   const onChangeEditTime = (event, selectedTime) => {
     setEditTime(selectedTime);
+    setEdited(true);
   };
 
   return (
@@ -117,7 +116,7 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
           {isEdit ? (
             <CustomButton
               onPress={handleEditPill}
-              disabled={!pillName && eachTimeObject}
+              disabled={!pillName && !edited}
               buttonText="수정"
             />
           ) : (
