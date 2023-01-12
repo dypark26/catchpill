@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import styled from '@emotion/native';
 import { COLORS } from '../shared/color';
 import { useUID } from '../Hooks/useAuth';
@@ -46,7 +46,10 @@ const GraphicStatus = () => {
     let color = '';
 
     switch (true) {
-      case opacity >= 0 && opacity <= 0.2:
+      case opacity == 0:
+        color = 'white';
+        break;
+      case opacity > 0 && opacity <= 0.2:
         color = COLORS.POINT_COLOR_20;
         break;
       case opacity > 0.2 && opacity <= 0.4:
@@ -106,7 +109,7 @@ const GraphicStatus = () => {
             <SupportText>{supportArr[pop]}</SupportText>
           </SupportTextContainer>
         </Supports>
-        <LeftPill style={{ backgroundColor: color }}>
+        <LeftPill style={{ ...styles.circleShadow, backgroundColor: color }}>
           <LeftpillText1>남은 약:</LeftpillText1>
           <LeftpillText2>{leftPillNum}</LeftpillText2>
           <LeftpillText3>/{totalPillNum}</LeftpillText3>
@@ -177,3 +180,22 @@ const LeftpillText3 = styled.Text`
   bottom: 0;
   right: -15%;
 `;
+
+const styles = StyleSheet.create({
+  circleShadow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
+  },
+});
