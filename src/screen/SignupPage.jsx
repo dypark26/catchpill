@@ -6,6 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { COLORS } from '../shared/color';
 import { ThemeContext } from '../context/Theme';
 import { ToggleModeButton } from '../context/Theme';
+import { PageContainer } from '../components/index';
 
 const regex = {
   email: new RegExp(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/),
@@ -61,13 +62,13 @@ const SignupPage = ({ navigation: { navigate } }) => {
   };
 
   return (
-    <SafeAreaView>
+    <PageContainer>
       <FormContainer theme={theme}>
         <BackToLoginPageButton onPress={() => navigate('로그인')}>
           <FontAwesome
             name="chevron-left"
             size={23}
-            color={theme === 'light' ? 'white' : 'black'}
+            color={theme === 'light' ? 'black' : 'white'}
           />
         </BackToLoginPageButton>
         <ToggleModeButton />
@@ -80,7 +81,7 @@ const SignupPage = ({ navigation: { navigate } }) => {
             value={email}
             onChangeText={setEmail}
             onChange={(text) => validEmail(text)}
-            style={styles.textInputShadow}
+            style={styles1.textInputShadow}
           />
 
           {correctEmail || (
@@ -102,7 +103,7 @@ const SignupPage = ({ navigation: { navigate } }) => {
             onChangeText={setPassword}
             onChange={(text) => validPassword(text)}
             secureTextEntry={visiblePassword}
-            style={styles.textInputShadow}
+            style={styles1.textInputShadow}
           />
           <PasswordShowButton
             onPress={() => setVisiblePassword(!visiblePassword)}
@@ -125,7 +126,7 @@ const SignupPage = ({ navigation: { navigate } }) => {
           <CustomButtonText>회원가입</CustomButtonText>
         </CustomButton>
       </FormContainer>
-    </SafeAreaView>
+    </PageContainer>
   );
 };
 
@@ -191,7 +192,7 @@ const CustomButton = styled.TouchableOpacity`
   border-radius: 16px;
 `;
 
-const styles = StyleSheet.create({
+const styles1 = StyleSheet.create({
   textInputShadow: {
     ...Platform.select({
       ios: {

@@ -9,8 +9,11 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 const GraphicStatus = () => {
   const { data: uid } = useUID();
   const { isError, error, isLoading, data: pillList } = useGetPillData(uid);
+
+  //응원글과 먹은 약 상태글 토글하기 위한 state
   const [message, setMessage] = useState(false);
 
+  //메세지 상태 토글 함수
   const toggleSupportMessage = () => {
     setMessage((current) => !current);
   };
@@ -33,18 +36,25 @@ const GraphicStatus = () => {
   }
 
   if (pillList !== undefined) {
+    //배열 길이 = 전체 약 개수
     const totalPillNum = pillList.length;
 
+    //isTaken true인 찾아서 먹은 약 개수 세기
     let isTakenNum = 0;
     for (pill of pillList) {
       if (pill.isTaken === true) {
         isTakenNum += 1;
       }
     }
+
+    //남은 약 = 전체 약 - 먹은약
     const leftPillNum = totalPillNum - isTakenNum;
+
+    // 남은약/전체약 비율 0~1
     const opacity = isTakenNum / totalPillNum;
     let color = '';
 
+    //0~1까지 비율에 따라 투명도 다르게 주기
     switch (true) {
       case opacity == 0:
         color = 'white';
@@ -65,6 +75,8 @@ const GraphicStatus = () => {
         color = COLORS.POINT_COLOR_100;
         break;
     }
+
+    //응원글 배열
     const supportArr = [
       '건강한 습관으로 한 걸음 더!',
       '오늘 어제보다 건강해졌어요!',
@@ -72,6 +84,8 @@ const GraphicStatus = () => {
       '오늘도 캐치필 하세요~',
       '건강한 나를 만들어가요',
     ];
+
+    //배열의 인덱스 랜덤으로 뽑아주기
     let pop = Math.floor(Math.random() * supportArr.length);
 
     return (
@@ -106,6 +120,7 @@ const GraphicStatus = () => {
           </View>
 
           <SupportTextContainer style={{ display: message ? 'flex' : 'none' }}>
+            {/* 랜덤으로 뽑아준 인덱스 이용해서 응원글 랜덤 뽑기 */}
             <SupportText>{supportArr[pop]}</SupportText>
           </SupportTextContainer>
         </Supports>
