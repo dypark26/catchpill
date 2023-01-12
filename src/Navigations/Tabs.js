@@ -37,10 +37,10 @@ const Tabs = () => {
           headerTitleAlign: 'center',
           tabBarLabel: ({ focused }) =>
             focused ? (
-              <Text style={{ fontSize: 10, color: 'black' }}>필 리스트</Text>
+              <Text style={{ fontSize: 10, color: 'black' }}>약 리스트</Text>
             ) : (
               <Text style={{ fontSize: 10, color: 'lightgrey' }}>
-                필 리스트
+                약 리스트
               </Text>
             ),
           tabBarIcon: ({ focused }) =>
