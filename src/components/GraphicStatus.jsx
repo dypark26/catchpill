@@ -125,7 +125,10 @@ const GraphicStatus = () => {
             )}
           </View>
 
-          <SupportTextContainer style={{ display: message ? 'flex' : 'none' }}>
+          <SupportTextContainer
+            theme={theme}
+            style={{ display: message ? 'flex' : 'none' }}
+          >
             {/* 랜덤으로 뽑아준 인덱스 이용해서 응원글 랜덤 뽑기 */}
             <SupportText theme={theme}>{supportArr[pop]}</SupportText>
           </SupportTextContainer>
