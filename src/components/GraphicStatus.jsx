@@ -111,7 +111,7 @@ const GraphicStatus = () => {
                 </SupportText>
               </SupportTextContainer>
             ) : opacity === 1 ? (
-              <SupportTextContainer>
+              <SupportTextContainer theme={theme}>
                 <SupportText theme={theme}>
                   축하합니다! 캐치필 달성!
                 </SupportText>
@@ -125,7 +125,10 @@ const GraphicStatus = () => {
             )}
           </View>
 
-          <SupportTextContainer style={{ display: message ? 'flex' : 'none' }}>
+          <SupportTextContainer
+            theme={theme}
+            style={{ display: message ? 'flex' : 'none' }}
+          >
             {/* 랜덤으로 뽑아준 인덱스 이용해서 응원글 랜덤 뽑기 */}
             <SupportText theme={theme}>{supportArr[pop]}</SupportText>
           </SupportTextContainer>
