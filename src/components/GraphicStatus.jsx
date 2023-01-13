@@ -111,7 +111,7 @@ const GraphicStatus = () => {
                 </SupportText>
               </SupportTextContainer>
             ) : opacity === 1 ? (
-              <SupportTextContainer>
+              <SupportTextContainer theme={theme}>
                 <SupportText theme={theme}>
                   축하합니다! 캐치필 달성!
                 </SupportText>

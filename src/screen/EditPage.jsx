@@ -96,23 +96,25 @@ const EditPage = ({ navigation: { navigate }, route: { params } }) => {
       <EditForm>
         {/* 약 이름 인풋 */}
         <BoxShadow color={theme === 'light' ? 'white' : '#343639'}>
-          <PillInfoTitle>약 이름 :</PillInfoTitle>
+          <PillInfoTitle theme={theme}>약 이름 :</PillInfoTitle>
           <PillNameInput
             defaultValue={eachPillName}
             placeholder="어떤 약인가요?"
             value={pillName}
             onChangeText={setPillName}
+            placeholderTextColor={theme === 'light' ? '#d5d5d5' : '#636568'}
+            theme={theme}
           />
         </BoxShadow>
 
         {/* 약 복용시간 타임피커 */}
         <TouchableOpacity onPress={handleOpenModal}>
           <BoxShadow color={theme === 'light' ? 'white' : '#343639'}>
-            <PillInfoTitle>복용 시간 :</PillInfoTitle>
+            <PillInfoTitle theme={theme}>복용 시간 :</PillInfoTitle>
             {isEdit ? (
-              <TimePicker>{localEditTime}</TimePicker>
+              <TimePicker theme={theme}>{localEditTime}</TimePicker>
             ) : (
-              <TimePicker>{localTime}</TimePicker>
+              <TimePicker theme={theme}>{localTime}</TimePicker>
             )}
           </BoxShadow>
         </TouchableOpacity>
